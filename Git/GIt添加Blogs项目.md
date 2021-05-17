@@ -190,7 +190,7 @@ total 72
 根据提示可知道github的仓库有两种情况。一种是从github clone到本地，还有一种是将本地已经存在仓库和云端关联，我们这里选择第二种。
 ![image-20210517182315469](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517182315469-1246999.png)
 
-在本地的`Blogs`仓库下输入如下命令:
+在本地的`Blogs`仓库下输入如下命令,将本地仓科和云端仓库关联:
 ```shell
 git remote add origin https://github.com/bluewang88/Blogs.git
 ```
@@ -225,3 +225,15 @@ git push origin main
 ```
 
 ![image-20210517183846570](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517183846570-1247928.png)
+
+## 为命令行Git添加代理
+
+有时运行git push的时候出现报错，则需要为git添加代理
+
+```shell
+fatal: unable to access 'https://github.com/bluewang88/Blogs.git/': LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
+```
+输入命令如下：
+```shell
+git config --global --add remote.origin.proxy "127.0.0.1:8001"
+```
