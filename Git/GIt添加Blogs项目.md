@@ -237,3 +237,12 @@ fatal: unable to access 'https://github.com/bluewang88/Blogs.git/': LibreSSL SSL
 ```shell
 git config --global --add remote.origin.proxy "127.0.0.1:8001"
 ```
+
+
+
+# 总结
+
+本地提交到github步骤
+1. `git add .` 添加所有的更新
+2. `git commit -m "mesages"` 提交到本地仓库
+3. `git push origin main` 推送到github仓库
