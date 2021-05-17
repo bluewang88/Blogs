@@ -246,3 +246,20 @@ git config --global --add remote.origin.proxy "127.0.0.1:8001"
 1. `git add .` 添加所有的更新
 2. `git commit -m "mesages"` 提交到本地仓库
 3. `git push origin main` 推送到github仓库
+
+## Git 常用命令
+
+```shell
+git init                                       #初始化git仓库
+git add .                                      #添加当前文件夹下的所有文件
+git status                                     #显示状态
+git commit                                     #提交代码
+git commit  -m ‘注释’                           #提交代码加注释
+git log                                        #看提交记录
+git push                                       #推送
+git push origin master               					 #推送到远程master分支
+git push origin ‘版本号’               				 #按照版本号推送到远程
+git remote add origin <URL>     							 #关联远程仓库
+git tag -a ’版本’ -m ‘描述’         				    #打标签
+git push - -tags                       			   #提交到远程
+```
