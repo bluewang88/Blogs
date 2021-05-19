@@ -15,3 +15,12 @@
 ![models](Django%E7%B3%BB%E7%BB%9F%E8%A7%84%E5%88%92%E8%AE%BE%E8%AE%A1.assets/class-diagram.png)
 
 ## 线框图
+
+
+
+# 总结
+
+深入学习可以参考设计模式，书籍推荐如下：
+《大话设计模式》
+《Head first 设计模式》
+《设计模式》GOF
