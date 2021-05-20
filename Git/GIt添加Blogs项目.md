@@ -196,7 +196,7 @@ git remote add origin https://github.com/bluewang88/Blogs.git
 ```
 添加后，远程库的名字就是`origin`，这是Git默认的叫法，也可以改成别的，但是`origin`这个名字一看就知道是远程库。
 
-## 将本地仓库内容推送到Github仓库
+## 3. 将本地仓库内容推送到Github仓库
 
 在本地`Blogs`仓库输入如下命令：
 ```shell
@@ -226,9 +226,9 @@ git push origin main
 
 ![image-20210517183846570](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517183846570-1247928.png)
 
-## 为命令行Git添加代理
+## 4. 为命令行Git添加代理
 
-有时运行git push的时候出现报错，则需要为git添加代理
+有时运行git push的时候出现报错，则需要为git添加代理，这里本地电脑已经开了VPN代理，所以只需要将其代理改为localhost本机即可。
 
 ```shell
 fatal: unable to access 'https://github.com/bluewang88/Blogs.git/': LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
@@ -238,6 +238,53 @@ fatal: unable to access 'https://github.com/bluewang88/Blogs.git/': LibreSSL SSL
 git config --global --add remote.origin.proxy "127.0.0.1:8001"
 ```
 
+
+
+# 当有远端人员push到Github
+
+当一个项目多个人协同工作时，有可能在你push本地仓库到Gihub上时，出现如下报错：
+
+```shell
+ ~/Documents/OneDrive/Blogs   main  git push origin main
+To https://github.com/bluewang88/Blogs.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'https://github.com/bluewang88/Blogs.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+这时，需要先查看远端的分支情况，输入如下命令：
+```shell
+git remote
+```
+Output:
+```shell
+origin
+```
+或者：
+```shell
+git remote -v
+```
+Output:
+```shell
+origin	https://github.com/bluewang88/Blogs.git (fetch)
+origin	https://github.com/bluewang88/Blogs.git (push)
+```
+
+得知远端的分支情况后，将远端的分支同步到本地
+
+```shell
+git pull origin main:FETCH_HEAD
+```
+Output:
+```shell
+From https://github.com/bluewang88/Blogs
+ * [new branch]      main       -> FETCH_HEAD
+Already up to date.
+```
 
 
 # 总结
