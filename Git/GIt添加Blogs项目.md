@@ -286,6 +286,55 @@ From https://github.com/bluewang88/Blogs
 Already up to date.
 ```
 
+## git push 出现“fatal: 'origin' does not appear to be a git repository”错误
+
+当正常提交输入如下命令时：
+```shell
+git push origin main
+```
+Output:
+```shell
+error: src refspec main does not match any
+error: failed to push some refs to 'origin'
+```
+或者输入：
+```shell
+git push origin master
+```
+Output:
+```shell
+fatal: 'origin' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+查看远程仓库情况：
+```shell
+git remote -v
+```
+output:
+```shell
+origin
+```
+解决方案：
+
+输入如下命令添加远程仓库路径：
+```shell
+git remote add origin https://github.com/bluewang88/Blogs.git
+```
+再查看远程仓库情况：
+```shell
+git remote -v
+```
+output:
+```shell
+origin	https://github.com/bluewang88/Blogs.git (fetch)
+origin	https://github.com/bluewang88/Blogs.git (push)
+```
+
+
 
 # 总结
 
