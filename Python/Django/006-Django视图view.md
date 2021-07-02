@@ -36,7 +36,7 @@ def home(request):
 
 根据线框图需要导入所有的Board板块，即在视图函数中导入Board的mode，并列出所有的Board的主题Topic
 
-![2-2-3.png](https://tva1.sinaimg.cn/large/008i3skNgy1gqscj89xctj30gf0abt9f.jpg)/
+![2-2-3.png](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/008i3skNgy1gqscj89xctj30gf0abt9f-20210525115259364.jpg)/
 
 可以添加如下的视图函数：
 
@@ -61,7 +61,7 @@ def home(request):
     return HttpResponse(response_html)
 ```
 
-![image-20210523145602691](https://tva1.sinaimg.cn/large/008i3skNgy1gqsd9xvnb3j316t0u03ze.jpg)
+![image-20210523145602691](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/008i3skNgy1gqsd9xvnb3j316t0u03ze.jpg)
 
 正常情况下我们会使用模版引擎来渲染HTML
 
@@ -162,7 +162,7 @@ def home(request):
     return render(request, 'home.html', {'boards': boards})
 ```
 
-![image-20210523171417539](006-Django%E8%A7%86%E5%9B%BEview.assets/image-20210523171417539-1761264.png)
+![image-20210523171417539](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210523171417539-1761264.png)
 
 优化的HTML
 
@@ -202,6 +202,5 @@ def home(request):
 </html>
 ```
 
-![image-20210523171729651](https://tva1.sinaimg.cn/large/008i3skNgy1gqshcr7x38j31610u0guk.jpg)
-
+![image-20210523171729651](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/008i3skNgy1gqshcr7x38j31610u0guk.jpg)
 

@@ -163,21 +163,21 @@ total 72
 ## 2. 将本地仓库关联到Github仓库
 
 登录Github
-![image-20210517180746522](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517180746522-1246078.png)
+![image-20210517180746522](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517180746522-1246078.png)
 
 打开Github账户设置
-<img src="GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517181048603-1246250.png" alt="image-20210517181048603" style="zoom: 33%;" />
+<img src="http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517181048603-1246250.png" alt="image-20210517181048603" style="zoom: 33%;" />
 
 在Github上添加生成的公钥
 > Github需要解析从本地发到github的内容只需要公钥即可
 
-![image-20210517181338009](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517181338009.png)
+![image-20210517181338009](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517181338009.png)
 
 将公钥内容复制进去
 
-![image-20210517181620261](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517181620261.png)
+![image-20210517181620261](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517181620261.png)
 
-![image-20210517181827732](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517181827732-1246709.png)
+![image-20210517181827732](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517181827732-1246709.png)
 
 
 
@@ -185,10 +185,10 @@ total 72
 
 在Github上创建项目
 
-![image-20210517182205886](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517182205886-1246927.png)
+![image-20210517182205886](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517182205886-1246927.png)
 
 根据提示可知道github的仓库有两种情况。一种是从github clone到本地，还有一种是将本地已经存在仓库和云端关联，我们这里选择第二种。
-![image-20210517182315469](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517182315469-1246999.png)
+![image-20210517182315469](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517182315469-1246999.png)
 
 在本地的`Blogs`仓库下输入如下命令,将本地仓科和云端仓库关联:
 ```shell
@@ -224,7 +224,7 @@ Branch 'main' set up to track remote branch 'main' from 'origin'.
 git push origin main
 ```
 
-![image-20210517183846570](GIt%E6%B7%BB%E5%8A%A0Blogs%E9%A1%B9%E7%9B%AE.assets/image-20210517183846570-1247928.png)
+![image-20210517183846570](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210517183846570-1247928.png)
 
 ## 4. 为命令行Git添加代理
 

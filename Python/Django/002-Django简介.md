@@ -16,5 +16,14 @@ MVC是将业务逻辑与显示界面分离的一种方法，他将软件系用�
 
 ### MTV
 
+Django自己的
 
+M（model）：负责业务对象和数据库的ORM映射；
 
+T（Template）：负责给客户看的页面
+
+V（View）：负责业务逻辑，在何时展现页面给用户
+
+URL分发器：将不同的URL请求分发给不同的view处理
+
+![img](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/1589777036-2760-fs1oSv4dOWAwC5yW.png)
