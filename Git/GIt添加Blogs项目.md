@@ -199,6 +199,9 @@ git remote add origin https://github.com/bluewang88/Blogs.git
 ## 3. 将本地仓库内容推送到Github仓库
 
 在本地`Blogs`仓库输入如下命令：
+
+'git c'
+
 ```shell
  ~/Documents/OneDrive/Blogs$master$ git branch -M main
  ~/Documents/OneDrive/Blogs$main$ git push -u origin main
@@ -341,7 +344,7 @@ origin	https://github.com/bluewang88/Blogs.git (push)
 本地提交到github步骤
 1. `git add .` 添加所有的更新
 2. `git commit -m "mesages"` 提交到本地仓库
-3. `git push origin main` 推送到github仓库
+3. `git push origin main` 推送到github仓库的main分支
 
 ## Git 常用命令
 
@@ -358,4 +361,6 @@ git push origin ‘版本号’               				 #按照版本号推送到远�
 git remote add origin <URL>     							 #关联远程仓库
 git tag -a ’版本’ -m ‘描述’         				    #打标签
 git push - -tags                       			   #提交到远程
+git config --global --list                     #查看git全局配置信息
+git config --local --list                      #查看git本地信息
 ```

@@ -86,7 +86,52 @@ https://nodejs.org/en/download/
 打开powershell，输入：
 
 ```shell
-yarn global add vuepress
+yarn global add vuepress  //全局安装vuepress
 ```
 
 ![image-20210702145215884](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210702145215884.png)
+
+创建一个存放vuepress的目录，并进入该目录
+
+```shell
+mkdir vuepress-project
+cd vuepress-project
+```
+
+初始化yarn
+
+```shell
+> yarn init
+yarn init v1.22.5
+question name (vuepress-project):
+question version (1.0.0):
+question description:
+question entry point (index.js):
+question repository url:
+question author:
+question license (MIT):
+question private:
+success Saved package.json
+Done in 5.51s.
+```
+
+这时会在文件夹中创建一个package.json的文件
+
+![image-20210702153355104](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210702153355104.png)
+
+
+
+如果上面没有进行去哪卷装vuepress，那么可以在这里进行安装
+
+```shell
+yarn add -D vuepress
+```
+
+![image-20210702154140542](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210702154140542.png)
+
+创建docs文件夹
+
+```shel
+mkdir d
+```
+

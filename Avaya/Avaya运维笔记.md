@@ -12,7 +12,7 @@ Avaya源自AT&T和朗讯科技，2009年收购北电（Nortel）的企业网业�
 
 ![image-20210618110305361](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210618110305361.png)
 
-![image-20210530231133451](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/image-20210530231133451.png)
+![image-20210530231133451](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530231133451.png)
 
 Avaya Aura 解决方案的核心组件如下：
 
@@ -44,12 +44,6 @@ ACD的主要作用和实现方式
 
 1. 硬排队：CM内置的CallCenter的软交换实现排队；
 2. 软排队：利用AIC或者CCE等CTI实现排队；
-
-#### Avaya的呼叫处理流程
-
-利用VDBN和Vector脚本实现呼叫流程
-
-![image-20210530003618383](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530003618383.png)
 
 
 
@@ -184,7 +178,7 @@ Avaya Contact Center Express （CCE）
 
 C/S：Avaya Agent Desktop
 
-![How To Use Avaya Agent for Desktop Tutorial - YouTube](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/hqdefault.jpg)
+![How To Use Avaya Agent for Desktop Tutorial - YouTube](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/hqdefault.jpg)
 
 B/S：Avaya Agent Web Client
 
@@ -259,7 +253,7 @@ Avaya PDS预测式外拨应用系统
 
 可以从如下的架构图，大概了解Avaya呼叫中心的整体设计和组件。
 
-![image-20210526122702126](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/image-20210526122702126.png)
+![image-20210526122702126](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526122702126.png)
 
 ![image-20210530021142839](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530021142839.png)
 
@@ -275,7 +269,9 @@ Avaya PDS预测式外拨应用系统
 
 ![image-20210530225219060](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530225219060.png)
 
+利用VDBN和Vector脚本实现呼叫流程
 
+![image-20210530003618383](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530003618383.png)
 
 ## 第2章 管理Avaya CM
 
@@ -615,7 +611,7 @@ display dialplan analysis
 | 拨号的字符串                                                 | 拨号的整个号码长度 | 应该匹配的类型                                               |
 | [0-9]                                                        | [1-2]              | attd:定义用户呼叫话务员.如果在fac中启用了attendant access code area,则无法配置attd，只能配置fac |
 |                                                              |                    | ext:分机号                                                   |
-|                                                              |                    | aar（自动路由迂回）：专网呼叫公司内部路由。使用这个必须激活`ARS/AAR Dialing without FAC`不适用FAC进行ARS和AAR呼叫的系统参数，可以输入`display system-parameters customer-options`查看对应的系统参数是否激活：![image-20210526160335275](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/image-20210526160335275-2016240.png)<br />![image-20210526160416956](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/image-20210526160416956-2017286.png)<br />AAR中的AAR Digit Conversio功能可以进一步做号码转换 |
+|                                                              |                    | aar（自动路由迂回）：专网呼叫公司内部路由。使用这个必须激活`ARS/AAR Dialing without FAC`不适用FAC进行ARS和AAR呼叫的系统参数，可以输入`display system-parameters customer-options`查看对应的系统参数是否激活：![image-20210526160335275](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526160335275-2016240.png)利用VDBN和Vector脚本实现呼叫流程<br/><br/>![image-20210530003618383](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530003618383.png)<br />![image-20210526160416956](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526160416956-2017286.png)<br />AAR中的AAR Digit Conversio功能可以进一步做号码转换 |
 |                                                              |                    | asr（自动路由选择）：路由到公网的呼叫，ARS中有ARS Digit Conversion可以进一步做好吗转换 |
 | 拨号接入码可以是以 1 至 9 的任何数字开始，最多包含四位数字。第一位数字也可以是 * 和 #。 | [1-4]              | fac（功能接入码）：包含了许多功能![image-20210526163602210](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526163602210.png) |
 | 拨号接入码可以是以 1 至 9 的任何数字开始，最多包含四位数字。第一位数字也可以是 * 和 #。 | [1-4]              | dac：拨号接入码(包含了中继接入码tac和功能接入码fac)，也就是说上图中#400-#499这100个号码中可以同时匹配tac和fac |
@@ -1745,25 +1741,155 @@ VDN和Vector的作用就是告诉系统如何处理`呼入`的呼叫,一个Vecto
 
 
 
-添加模拟话机
+##### 2.4.1.2 添加硬件话机
 
-#### 添加IP话机
+1. 模拟或者数字话机需要有对应的板卡和接口，所以需要首先检查服务器的注册的并且时可用的接口；
 
-##### IP 硬电话
+`DS1`是数字板卡
 
-##### IP 软电话
+`ANA`是模拟板卡
 
-#### 复制话机
+如果是需要添加IP话机，则不用这一步，直接跳转到第三步
+
+在ASA输入如下命令：
+
+```shell
+list con all
+```
+
+![image-20210705162933666](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210705162933666.png)
+
+看到`001v3` 模拟板卡的接口未使用(接口显示`u`)，那么我们使用第一个端口，则端口编号为`01`
+
+那么话机的地址为`001v301`（即`板卡编号+端口号`），记住这个地址；
+
+2. 将要注册的话机（数字或者模拟话机），链接到对应的板卡接口上；
+
+3. 在Avaya CM系统上添加分机号和话机。
+
+   在ASA管理软件中，连接CM，输入如下命令后，按`Enter`：
+
+   ```shell
+   add station n  //n是新话机的分机号
+   ```
+
+   ![image-20210705180127703](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210705180127703.png)
+
+​           在`Type`填写话机的型号，根据填写的uaji类型，页面选项会有变动。（如果填写的是IP话机你，啊么在Port位置直接会显示`IP`,就不需要填写对应的端口地址了，在IP电话注册后，会自动生成`S`开头的端口地址）
+
+​           在`Port`填写刚才记住的话机地址，即`001v301`（板卡号+端口号）
+
+​			在`Name`处键入一个和话机相关的名字，这个名字将显示在被叫话机的来电显示上。
+
+在`TN`、`COR`、`COS`中填写对应的权限，如果有`Coverage Path`那么在对应位置填写呼叫涵盖的值。
 
 
 
 
 
+##### 2.4.1.4 添加IP 软电话
 
+Avaya使用One-X系列的软电话
 
+![image-20210706102006256](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706102006256.png)
 
+注册软电话流程与注册硬件IP电话类似。
 
+可以使用`list registered-ip-stations`查看注册话机
 
+![image-20210706103541802](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706103541802.png)
+
+1. 输入`add station n`（n为分机号）
+
+2. 输入如下值，完成后点击`Enter`：
+
+   `Type`:1608(只要是IP话机的类型软电话都可以注册)
+
+   `Name`:test
+
+   `Secure Code`:1234
+
+   `IP SoftPhone` : Y
+
+![image-20210706104541073](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706104541073.png)
+
+设置软电话的注册服务器，双击打开软电话，打开设置
+
+![image-20210706105254878](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706105254878.png)
+
+添加注册服务器，选择使用的注册协议是H323还是SIP，点击确定后回到登陆页面
+
+![image-20210706105502459](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706105502459.png)
+
+点击登录；
+
+![image-20210706105702311](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706105702311.png)
+
+登录成功后可以看到软电话的界面。
+
+![image-20210706111019834](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706111019834.png)
+
+##### 2.4.1.5 复制话机
+
+如果系统之前有注册过同类型话机，需要在新注册同类型话机，那么我们可以通过复制之前的话即，进行简单那修改。
+
+输入如下命令：
+
+```shell
+duplication station x
+```
+
+出现如图所示的，填写分机号和Name,可以批量添加同类型的话机。
+
+![image-20210706111503978](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706111503978.png)
+
+##### 2.4.1.6 使用分机模版新建话机
+
+> 可以通过复制已有的话机新增话机，或者建立话机模版，应用于整个话机组。（只有同型号的话机才能进行复制操作）
+
+1. `list sation`查看所有分机，找到自己需要复制的分机
+
+   ![image-20210527154603922](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527154603922.png)
+
+   或者使用GEDI的GUI页面显示分机，格式更易观看：
+
+   ![image-20210527154948989](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527154948989.png)
+
+2. `display station xxx`,点击`ENTER`,核实是否是需要复制的话机，确认无误后点击`Cancel`；
+
+   ![image-20210527155344586](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155344586.png)
+
+   ![image-20210527155931162](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155931162.png)
+
+   ![image-20210527155952828](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155952828.png)
+
+   ![image-20210527160007535](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527160007535.png)
+
+3. `duplicate station xxx`,点击`ENTER`，建立话机模版；
+
+   ![image-20210527165038286](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527165038286.png)
+
+4. 输入每一部新话机的分机号，端口号，和话机名称；（更具话机类型的不同，创建的模版需要填写的内容不同）
+
+   
+
+##### 2.4.1.7使用话机类型别名创建话机
+
+有些话机型号在当前版本的CM上没有，但是话机本省可以使用其他型号进行创建注册。
+
+输入`change alias station`创建别名：
+
+![image-20210528125731000](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528125731000.png)
+
+`Alias Set Type`: 填写系统不支持的型号
+
+`Supported Set Type`:填写系统中支持的型号
+
+这种办法可能会导致新型号的话机部分功能无法使用。
+
+##### 2.4.1.8 查看分机号是否是某个组的成员
+
+`list groups-of-extension xxx`
 
 
 #### 2.4.2 Avaya CM 安装补丁
@@ -1892,9 +2018,117 @@ update_deactivate <filename>
 
 
 
+### 2.5 功能管理
+
+#### 2.5.1 改变功能参数
+
+`display system-parameters feature` 查看系统功能参数
+
+![image-20210528164138514](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528164138514.png)
+
+`change system-parameters feature`
+
+![image-20210528164405207](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528164405207.png)
+
+#### 2.5.2 设置短拨号(快速拨号)
+
+`list abbreviated-dialing group xxx `  xxx为group的号码
+
+`add abbrevicated-dialing group next`添加快速拨号组
+
+![image-20210528165904329](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165904329.png)
+
+`Size`： 快速拨号清单中的号码个数，比如：如果需要添加8个快速拨号的号码，则在这里填写10。
+
+`Program Ext`： 允许填入的分机对快速拨号列表进行修改
+
+> 快速拨号添加号码，最长不超过26位
 
 
-## TroubleShooting
+
+添加完成快速拨号组之后，需要将其绑定到对应的分机上才能够生效：
+
+![image-20210528165819785](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165819785.png)
+
+
+
+#### 2.5.3 设置代答组 pickup
+
+`list pickup-group`
+
+![image-20210528165554005](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165554005.png)
+
+`add pickup-group next` 一个pickup组最多50个分机号
+
+![image-20210528170814523](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528170814523.png)
+
+#### 2.5.4 定向代答组（directed Call Pickup）
+
+
+
+##### 2.5.4.1 拓展代答组
+
+<待补充>
+
+
+
+#### 2.5.5 设置呼叫前转
+
+`display system-parameters coverage-forwarding` 查看呼叫前转的参数，设置用户多长时间未应答则进行前转
+
+![image-20210528174904526](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528174904526.png)
+
+![image-20210528174916780](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528174916780.png)
+
+`list call-forwarding`  查看启用了呼叫前转的话机的号码
+
+![image-20210528175614820](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528175614820.png)
+
+#### 2.5.6 COS（Class of Service）
+
+COS不能适用于Trunk-group的远程接入功能，COS定义了话机用户本身能够访问的功能；
+
+COS最多分为16个等级（0-15）
+
+COS组最多一百个（系统必须启动分区-Tenant Partition）
+
+查看COS组内的权限功能：
+
+`display cos-group 1`
+
+![image-20210528181441545](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528181441545.png)
+
+![image-20210528181516995](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528181516995.png)
+
+#### 2.5.7 建立涵盖路径 coverage path
+
+`coverage path`是指当呼入的呼叫没有应答时，设置这个呼叫按照顺序将呼叫路由到可处理的应答点，如果路由的应答点无法处理，则路由到下一个。应答点可以时分机号也可以是邮箱等。
+
+一个分机最多有6个涵盖点（应答点）
+
+`display coverage path x`
+
+![image-20210528183447990](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183447990.png)
+
+`add coverage path next` 添加新的涵盖点
+
+![image-20210528183701965](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183701965.png)
+
+建立完成涵盖点后需要将分机下绑定涵盖路径：
+
+`change station xxx`
+
+![image-20210528183844643](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183844643.png)
+
+#### 2.5.8 建立增强型涵盖路径 coverage path
+
+<待补充>
+
+#### 2.5.9 建立桥接呼叫
+
+<待补充>
+
+## 第3章 TroubleShooting
 
 ### 常用命令
 
@@ -1913,6 +2147,10 @@ update_deactivate <filename>
 ##### 查看注册分机号
 
 `list registered-ip-sation`
+
+##### 追踪分机号
+
+`list trace station xxx`
 
 ##### 查看板卡
 
@@ -1940,7 +2178,7 @@ update_deactivate <filename>
 
 > CM管理媒体网关，类易于思科的MGCP，所有语音配置都在CM上管理配置，网关上没有语音配置，只有基本的网络配置。
 
-![image-20210531153308499](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/image-20210531153308499.png)
+![image-20210531153308499](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210531153308499.png)
 
 ##### 查看系统日志
 
@@ -1950,9 +2188,7 @@ update_deactivate <filename>
 
 消除告警
 
-#### 追踪分机号
 
-`list trace station xxx`
 
 #### 追踪trunk
 
@@ -2030,175 +2266,17 @@ update_deactivate <filename>
 
      输入`status logins`可以看到所有管理员的登录状态，并且可以看到管理员当前正在使用的command
 
-     ![image-20210527173802649](Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets/image-20210527173802649.png)
+     ![image-20210527173802649](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527173802649.png)
 
      图片显示dadmin这个管理员正在使用`stat logins`这个命令。（这是以自己的账号演示，`*`表示这个管理员是你当前登录的管理员）
 
      2. 输入`reset login-ID 3`将命令被lock的管理员账户重置、登出，从而解决问题。
 
-## 理解Avaya Comunication Manager 功能
 
 
+## 附录
 
-## 话机管理
-
-
-
-### 使用分机模版新建话机
-
-> 可以通过复制已有的话机新增话机，或者建立话机模版，应用于整个话机组。（只有同型号的话机才能进行复制操作）
-
-1. `list sation`查看所有分机，找到自己需要复制的分机
-
-   ![image-20210527154603922](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527154603922.png)
-
-   或者使用GEDI的GUI页面显示分机，格式更易观看：
-
-   ![image-20210527154948989](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527154948989.png)
-
-2. `display station xxx`,点击`ENTER`,核实是否是需要复制的话机，确认无误后点击`Cancel`；
-
-   ![image-20210527155344586](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155344586.png)
-
-   ![image-20210527155931162](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155931162.png)
-
-   ![image-20210527155952828](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155952828.png)
-
-   ![image-20210527160007535](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527160007535.png)
-
-3. `duplicate station xxx`,点击`ENTER`，建立话机模版；
-
-   ![image-20210527165038286](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527165038286.png)
-
-4. 输入每一部新话机的分机号，端口号，和话机名称；（更具话机类型的不同，创建的模版需要填写的内容不同）
-
-   
-
-### 使用话机类型别名创建话机
-
-有些话机型号在当前版本的CM上没有，但是话机本省可以使用其他型号进行创建注册。
-
-输入`change alias station`创建别名：
-
-![image-20210528125731000](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528125731000.png)
-
-`Alias Set Type`: 填写系统不支持的型号
-
-`Supported Set Type`:填写系统中支持的型号
-
-这种办法可能会导致新型号的话机部分功能无法使用。
-
-### 查看分机号是否是某个组的成员
-
-`list groups-of-extension xxx`
-
-## 功能管理
-
-### 改变功能参数
-
-`display system-parameters feature` 查看系统功能参数
-
-![image-20210528164138514](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528164138514.png)
-
-`change system-parameters feature`
-
-![image-20210528164405207](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528164405207.png)
-
-### 设置短拨号(快速拨号)
-
-`list abbreviated-dialing group xxx `  xxx为group的号码
-
-`add abbrevicated-dialing group next`添加快速拨号组
-
-![image-20210528165904329](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165904329.png)
-
-`Size`： 快速拨号清单中的号码个数，比如：如果需要添加8个快速拨号的号码，则在这里填写10。
-
-`Program Ext`： 允许填入的分机对快速拨号列表进行修改
-
-> 快速拨号添加号码，最长不超过26位
-
-
-
-添加完成快速拨号组之后，需要将其绑定到对应的分机上才能够生效：
-
-![image-20210528165819785](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165819785.png)
-
-
-
-### 设置代答组 pickup
-
-`list pickup-group`
-
-![image-20210528165554005](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165554005.png)
-
-`add pickup-group next` 一个pickup组最多50个分机号
-
-![image-20210528170814523](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528170814523.png)
-
-#### 定向代答组（directed Call Pickup）
-
-
-
-#### 拓展代答组
-
-
-
-### 设置呼叫前转
-
-`display system-parameters coverage-forwarding` 查看呼叫前转的参数，设置用户多长时间未应答则进行前转
-
-![image-20210528174904526](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528174904526.png)
-
-![image-20210528174916780](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528174916780.png)
-
-`list call-forwarding`  查看启用了呼叫前转的话机的号码
-
-![image-20210528175614820](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528175614820.png)
-
-#### COS（Class of Service）
-
-COS不能适用于Trunk-group的远程接入功能，COS定义了话机用户本身能够访问的功能；
-
-COS最多分为16个等级（0-15）
-
-COS组最多一百个（系统必须启动分区-Tenant Partition）
-
-查看COS组内的权限功能：
-
-`display cos-group 1`
-
-![image-20210528181441545](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528181441545.png)
-
-![image-20210528181516995](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528181516995.png)
-
-### 建立涵盖路径 coverage path
-
-`coverage path`是指当呼入的呼叫没有应答时，设置这个呼叫按照顺序将呼叫路由到可处理的应答点，如果路由的应答点无法处理，则路由到下一个。应答点可以时分机号也可以是邮箱等。
-
-一个分机最多有6个涵盖点（应答点）
-
-`display coverage path x`
-
-![image-20210528183447990](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183447990.png)
-
-`add coverage path next` 添加新的涵盖点
-
-![image-20210528183701965](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183701965.png)
-
-建立完成涵盖点后需要将分机下绑定涵盖路径：
-
-`change station xxx`
-
-![image-20210528183844643](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183844643.png)
-
-### 建立增强型涵盖路径 coverage path
-
-### 建立桥接呼叫
-
-
-
-## AES 运维管理
+### AES 运维管理
 
 
 
@@ -2257,7 +2335,7 @@ AES具有以下服务：
 
 ![image-20210603153603716](http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603153603716.png)
 
-## G450 运维
+### G450 运维
 
 ### 登录G450设备
 

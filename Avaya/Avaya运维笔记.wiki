@@ -1,0 +1,2683 @@
+Avaya UC&amp;呼叫中心运维指南
+
+== 第1章 Avaya 简介与产品介绍 ==
+
+=== 1.1 Avaya公司简介 ===
+
+Avaya源自AT&amp;T和朗讯科技，2009年收购北电（Nortel）的企业网业务。Avaya公司的业务包含了企业IPT部分（IPPBX、IP Office等）、UC的终端产品（X-one系列）、视频产品（redvision）、交换机（Nortel），最有竞争力的是其呼叫中心的全产品线。
+
+=== 1.2 Avaya Aura Core 解决方案架构 ===
+
+下图是Avaya Aura解决方案的架构组成，其中心组件是Session Manager负责与各个系统对接。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210618110305361.png|thumb|none]]
+
+[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\image-20210530231133451.png|thumb|none]]
+
+Avaya Aura 解决方案的核心组件如下：
+
+# Avaya Aura System Manager（SMGR）
+# Avaya Aura Session Manager （ASM）
+# Avaya Aura Communication Manager （ACM）
+# Avaya Aura Application Enablement Services （AES）
+# Avaya Aura Media Server （AMS）
+# Presence Services
+
+Avaya联络中心的逻辑架构如下：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530222925611.png|thumb|none]]
+
+Avaya ACD平台架构
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530001824144.png|thumb|none]]
+
+ACD的主要作用和实现方式
+
+作用：
+
+# 呼入呼出的路由；
+# 通话排队；
+# 通话分配；
+# 话务流量统计；
+
+实现方式：
+
+# 硬排队：CM内置的CallCenter的软交换实现排队；
+# 软排队：利用AIC或者CCE等CTI实现排队；
+
+==== Avaya的呼叫处理流程 ====
+
+利用VDBN和Vector脚本实现呼叫流程
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530003618383.png|thumb|none]]
+
+
+
+===== 1.2.1 Avaya Cummunication Manager——Avaya的PBX =====
+
+<blockquote>ACM是Avaya Aura解决方案中的PBX角色，她负责对呼叫进行处理和路由；
+
+ACM内建了简单的会议和呼叫中心的功能。支持CO（模拟），数字，SIP，H323等协议的trunk；
+
+支持HA的模式；
+</blockquote>
+语音对网络的性能要求
+
+{|
+! Metric
+! Recommended
+! Acceptable
+|-
+| One-way Network Delay
+| &lt; 80 milliseconds
+| &lt; 180 milliseconds
+|-
+| Network Jitter
+| &lt; 10 milliseconds
+| &lt; 20 milliseconds
+|-
+| Network Packet Loss (Voice)
+| 1.0%
+| 3.0%
+|-
+| Network Packet Loss (Video)
+| 0.1%
+| 0.2%
+|-
+| QoS Enabled
+| Required
+| Required
+|}
+
+====== 1.2.1.1 ACM的硬件服务器 ======
+
+<blockquote>S8300 属于小型的分支站点的PBX，他不是一个单独硬件服务器，而是作为一个板卡（board），安装在Avaya G700, G450, G430, G350 or G250 Gateway网关上。然后在其上安装ACM服务器。
+</blockquote>
+
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/P0068-1.png|thumb|none|alt=S8300 Server|S8300 Server]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/P0068-2.png|thumb|none|alt=S8300 Server|S8300 Server]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/S8300-lg__59486.1536750192.jpg|thumb|none|alt=S8300 Avaya Icc/lsp C V2 Media Server For G700/ G450/ G350/ G250 (Refurbished)|S8300 Avaya Icc/lsp C V2 Media Server For G700/ G450/ G350/ G250 (Refurbished)]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525173658536.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525173740290.png|thumb|none]]
+
+
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525174043598.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525173939490.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525174200793.png|thumb|none]]
+
+Avaya其他服务器和语音网关的结合的图例：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530002149340.png|thumb|none]]
+
+===== 1.2.2 Avaya CTI产品-AES（Application Enbalement Server） =====
+
+AES提供AVAYA 解决方案的一组API接口、协议、和web服务来与其他应用进行对接集成
+
+* 附属交换机应用程序接口 (ASAI)：通过此 API，附属应用程序可以使用Communication Manager功能和服务。与附件的集成通过 API 进行。ASAI 是 Avaya Computer Telephony 的一部分。
+* DEFINITY应用程序编程接口 (DAPI)，用于访问Communication Manager 中的控制和数据路径。
+* Java 电话应用程序编程接口 (JTAPI)：这是 Avaya Computer Telephony 支持的开放 API，可集成到Communication Manager ASAI。
+* 电话应用程序编程接口 (TAPI)：此 API 用于为运行 Microsoft Windows 操作系统的计算机提供电话服务。
+* 电话服务应用程序编程接口 (TSAPI)：此开放式 API 受 Avaya Computer Telephony 支持，并可与Communication Manager ASAI集成。
+
+Avaya CTI 产品的位于整体解决方案的位置：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530003935637.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/avaya-aura-application-enablement-services-aes-21-638.jpg|thumb|none]]
+
+===== 1.2.3 Avaya SBCE（SBCE+EMS） =====
+
+Avaya SBCE 提供到SIP的UC系统的安全通信。
+
+SBCE包含两个部分：
+
+# Session Border Controlller；
+# Element Management System(EMS) 一个管理系统；
+
+Avaya SBCE 提供两个版本：
+
+# 高级版本：
+# 标准版本：
+
+SBC和EMS都能够提供HA的解决方案。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/GUID-04357C49-5C5A-492F-9A10-69D4DF6FB9F2-low.jpg|thumb|none]]
+
+===== 1.2.4 Avaya Aura Media Server (MS) =====
+
+AMS相当于软件DSP资源，AMS媒体应用服务器支持SIP TLS，SRTP，VoiceXML ，音视频等。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210618170032933.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210618170220513.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/P0955-1.jpg|thumb|none]]
+
+
+
+===== 1.2.5 Avaya Communication Server 1000E =====
+
+纯IP的IPPBX，支持分布式部署。
+
+2019年不再生产
+
+[[File:https://support.avaya.com/media/product-images/P0714/P0714-1.png|thumb|none]]
+
+
+
+===== 1.2.6 Avaya Session Manager （ASM） =====
+
+Avaya的SIP代理服务器/SIP处理服务器，作为Avaya SIP解决方案架构的核心，连接CM，SBC，第三方PBX等应用。ASM服务器主要用于处理SIP呼叫，将其转发到对应的服务器。
+
+ASM的配置需要由SMGR来进行，本身没有web界面。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210618175232114.png|thumb|none]]
+
+
+
+===== 1.2.7 Media Gateway媒体网关 =====
+
+Avaya 提供连接运营商线路的边缘网关设备，如G350、G450等等
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603135831168.png|thumb|none]]
+
+===== 1.2.8 AIC-企业的CTI解决方案 =====
+
+Avaya Interaction Center
+
+* 提供与其他系统对接，如Avaya Call Center Elite等呼叫中心的产品
+* 提供坐席客户端（B/S或者C/S）
+
+Avaya Interaction Center（AIC）
+
+Avaya Contact Center Express （CCE）
+
+C/S：Avaya Agent Desktop
+
+[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\hqdefault.jpg|thumb|none]]
+
+B/S：Avaya Agent Web Client
+
+
+
+===== 1.2.9 AVP(Avaya Voice Portal)-IVR自助服务平台 =====
+
+* 同时支持H323、SIP
+* 支持SIP Trunk
+* 采用标准的开放接口：VoiceXML ，CCXML，J2EE，MRCP，WebService，等等
+
+Avaya Interactive Response（AIR）
+
+Avaya Voice Portal（AVP）
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530030133401.png|thumb|none]]
+
+===== 1.2.10 CMS (Call Management System)呼叫管理系统（报表系统） =====
+
+除了提供详细的报表数据，还会提供ACD的管理功能。
+
+BCMR
+
+标准呼叫管理系统
+
+* 由服务器组建和客户端组件构成；
+* 运行在WIndows
+* C/S
+
+CMS
+
+高级呼叫管理系统
+
+* C/S
+* 服务器端运行在SUN SOLARIS，客户端运行在Windows
+
+
+
+<ul>
+<li><p>提供详细的报表</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530022116081.png|thumb|none]]
+</li></ul>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530122914249.png|thumb|none]]
+
+===== 1.2.11 外呼应用解决方案 =====
+
+软件外呼解决方案
+
+Avaya PDS预测式外拨应用系统
+
+===== 1.2.12 ACD自动呼叫分配系统 =====
+
+基本呼叫中心软件包introductory
+
+精英型呼叫软件包ELIE
+
+智能自动呼叫分配软件包ELITE with advocate
+
+===== 1.2.13 录音系统 =====
+
+对接第三方录音系统，如NICE录音等
+
+
+
+===== 1.2.14 WorkFlow Designer 工作流设计工具 =====
+
+用于呼叫中心。
+
+
+
+=== 1.3 Avaya呼叫中心解决方案的整体架构图 ===
+
+可以从如下的架构图，大概了解Avaya呼叫中心的整体设计和组件。
+
+[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\image-20210526122702126.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530021142839.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/168-0.jpg|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530194440175.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530215435120.png|thumb|none]]
+
+==== 1.3.1 呼叫中心处理流程 ====
+
+如图展示了avaya呼叫中心的一通通话处理流程：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210530225219060.png|thumb|none]]
+
+
+
+== 第2章 管理Avaya CM ==
+
+=== 2.1 登录管理Communication Manager的方法 ===
+
+===== 2.1.1 SSH 工具登录 =====
+
+<blockquote>使用命令行登录Avaya CM的SAT管理程序
+</blockquote>
+命令行输入：
+
+<syntaxhighlight lang="shell">ssh <user name>@<cm ip> </syntaxhighlight>
+Output:
+
+<syntaxhighlight lang="shell">This system is restricted solely to authorized users for legitimate business
+purposes only. The actual or attempted unauthorized access, use or modifications
+of this system is strictly prohibited. Unauthorized users are subject to
+company disciplinary procedures and or criminal and civil penalties under state,
+federal or other applicable domestic and foreign laws.
+
+The use of this system may be monitored and recorded for administrative and
+security reasons. Anyone accessing this system expressly consents to such
+monitoring and recording, and is advised that if it reveals possible evidence
+of criminal activity, the evidence of such activity may be provided to law
+enforcement officials.
+
+All users must comply with all corporate instructions regarding the protection
+of information assets.
+Password:   //输入密码
+Last login: Tue May 25 18:30:09 CST 2021 from 10.200.15.217 on pts/0
+Enter your terminal type (i.e., xterm, vt100, etc.) [vt100]=>
+24385: old priority 0, new priority 0
+
+dadmin@SZ-MainServer></syntaxhighlight>
+这时输入：
+
+<syntaxhighlight lang="shell">dadmin@SZ-MainServer> sat</syntaxhighlight>
+Output:
+
+<syntaxhighlight lang="shell">Pin:     //输入Pin码
+System: Small                        Software Version: R016x.03.0.124.0
+
+Terminal Type (513, 715, 4410, 4425, VT220, NTT, W2KTT, SUNT): [513]   4410 //4410对应SAT程序</syntaxhighlight>
+最后会显示SAT界面，这时可以输入SAT的相关命令：
+
+<syntaxhighlight lang="shell">This system is restricted to authorized users for legitimate business purposes.
+          Unauthorized access is a criminal violation of the law.
+           Copyright 1992 - 2013 Avaya Inc. All Rights Reserved.
+Except where expressly stated otherwise, this Product is protected by copyright
+and other laws respecting proprietary rights. Certain software programs or
+portions thereof included in this Product may contain software distributed
+under third party agreements, which may contain terms that expand or limit
+rights to use certain portions of the Product. Information identifying third
+party components and terms that apply to them are available on Avaya's web
+           site at: http://support.avaya.com/ThirdPartyLicense/.
+
+Command:</syntaxhighlight>
+
+
+
+
+
+
+===== 2.1.2 ASA（Avaya Site Administration）登录 =====
+
+ACM有桌面管理软件登陆，进行管理。
+
+Step1：双击打开ASA软件，进入<code>File-&gt;New-&gt;Voice System</code>；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628144602673.png|thumb|none]]
+
+Step2: 在红框部分输入系统名称，可以是任意名称，只要方便管理员后续识别和操作；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628144821637.png|thumb|none]]
+
+Step3:选择<code>Network connection</code>使用网络连接；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628145415849.png|thumb|none]]
+
+Step4:在空格处填写ACM的管理地址；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628145748104.png|thumb|none]]
+
+Step5:保持默认配置，点击下一页；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628150119226.png|thumb|none]]
+
+Step6:保持默认，点击下一步；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628150248466.png|thumb|none]]
+
+Step7:保持默认，点击下一步；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628150352395.png|thumb|none]]
+
+Step8：在红框中输入用户名和密码还有PIN值，输入完成后，点击下一步；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628150503657.png|thumb|none]]
+
+Step9：检查参数是否正确，并点击<code>Test</code>检查是否能够来连接成功；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628150733833.png|thumb|none]]
+
+Step10：点击完成
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628150934143.png|thumb|none]]
+
+可以使用GEDI的GUI界面
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527145836760.png|thumb|none]]
+
+或者可以使用Emulation（功能全，推荐）
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210628151103529.png|thumb|none]]
+
+===== 2.1.3 WEB登录 =====
+
+<ol style="list-style-type: decimal;">
+<li><p>在浏览器输入CM的地址，点击continue</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525180221151.png|thumb|none]]
+</li>
+<li><p>输入用户名和密码</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525180319241.png|thumb|none]]
+</li></ol>
+
+看到上次登录信息，点击continue
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525180448139.png|thumb|none]]
+
+# 进入Administration-&gt;Server(Maintenance)
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525180901221.png|thumb|none]]
+
+可以看到管理界面
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210525181034104.png|thumb|none]]
+
+=== 2.2 常用命令 ===
+
+==== 2.2.1 退出系统 ====
+
+输入<code>logoff</code>,看见提示输入<code>y</code>，直接退出系统。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526153034778.png|thumb|none]]
+
+==== 2.2.2 查看时间 ====
+
+输入<code>display time</code>:
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526152517327.png|thumb|none]]
+
+输入<code>set time</code>设置时间：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526152741352.png|thumb|none]]
+
+==== 2.2.3 保存配置 ====
+
+===== 2.2.3.1 暂时存储 =====
+
+<blockquote>avaya cm修改配置后，点击<code>Enter</code>键后，并返回<code>command successful complated</code>后，会将配置保存在RAM中，断电后会丢失。
+</blockquote>
+===== 2.2.3.2 永久存储 =====
+
+<blockquote>输入<code>save translation</code>命令，将配置保存到ROM中，过程会花费较长时间，并且在保存配置过程中无法进行配置操作；
+
+avaya同时可以配置计划，定时进行配置保存。输入<code>display sytem-parameters maintenance</code>命令可以查看系统的定时备份计划。
+</blockquote>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526151809511.png|thumb|none]]
+
+==== 2.2.4 常用动作 ====
+
+<syntaxhighlight lang="shell">add        新增
+change     更改
+remove     刪除
+list       列表
+status     檢視狀態
+monitor    監控</syntaxhighlight>
+常用操作对象
+
+<syntaxhighlight lang="shell">station            分機
+agent-loginID      座席工號
+hunt-group         尋線組或技能組
+trunk-group        中繼組
+VDN                虚拟引导号码
+vector             虚拟引导脚本</syntaxhighlight>
+命令例子
+
+<syntaxhighlight lang="shell">Dup station XXX         複製一個與XXX分機配置相同的新號碼
+monitor bcms vdn X      監測VDN號“X”的狀況</syntaxhighlight>
+==== 2.2.5 List 命令 ====
+
+<syntaxhighlight lang="shell">list trunk-group         檢視系統目前的中繼線情況
+list hunt-group          檢視系統所設定的尋線組設定
+list station             檢視系統所設定的分機
+list vdn                 檢視系統設定的虛擬引導號碼
+list bcms vdn xxxx       在交換機上檢視VDN xxxx每小時電話接入次數
+list bcms skill x        在交換機上檢視尋線組x每小時電話接入次數
+List   con   sta         查詢分機（含數字，模擬）板卡port使用狀況
+list cti-link            查詢link狀況
+List   con   ds1         查詢各DS1板卡port使用狀況
+`List   trace   station X 追蹤分機工作狀況（X為分機號碼)`
+List   trace   tac   X   追蹤尋線組工作狀況
+List   us ext X          有任意一個X的數值串，查詢它在其他地方的使用情況
+List   ars ana           檢視此種類型的出局方式(兩種不同的出局方式)
+List   aar ana           檢視此種類型的出局方式
+自動路由迂迴（aar） — 用於在您自己的專網上路由公司內部的呼叫。
+自動路由選擇（ars） — 用於路由您公司進入公網的呼叫。如果您不具有專網， ARS 也用於路由至您公司遠距離辦公地點的呼叫。
+List   measurements occupacy last-hour           檢視每三分鐘重新整理的系統話務總量
+List   measurements occupacy summary             檢視每一小時重新整理的系統話務總量
+List   measurements occupacy summary            檢視間隔時段最忙系統話務總量
+List holiday               假日指令碼編寫
+List bcms trunk X          檢視X尋線組的話務狀況（bcms即報表系統）
+List login                 檢視使用者名稱
+List con ca + xx           檢視機櫃板卡用途(機櫃號)
+list agent-loginID xxxx    檢視座席工號的設定及狀態
+list con ca X              檢視X機櫃上有無port佔用
+list test- schedule        檢視測試時間進度表
+list agent staffed         檢視所有坐席登入系統狀況，可看到其登入分機等資訊
+list skill-status sta      檢視各技能組所對應配置
+list ip-interface clan     檢視clan、ip地址，槽位</syntaxhighlight>
+==== 2.2.6 Change 命令 ====
+
+<blockquote>change 命令对系统有影响，需要谨慎操作。
+
+chang命令操作够厚，不要随意关闭终端视窗，会导致数据丢失，应该输入<code>logoff</code>退出
+</blockquote>
+<syntaxhighlight lang="shell">Change abbreviated-dialing group X  更改尋線組縮略成員
+change vector x           更改系統虛擬引導號碼相應的引導路徑
+change station xxxx       更改分機引數
+change log X              更改（X）使用者的密碼
+change ip-services        更改使用者登入埠設定
+change node-names ip      更改外接終端IP地址及接入名
+change system cdr         記費
+change system mu          系統多屏資訊
+change isdn public-unknown-N        指定分機送主叫號
+change pickup-group X    話務組設定（設定一個通話組，組中成員可做強聽等操作）
+change cov path X       “station”設定介面中“coverage path”值即為所要執行的指令碼編號X
+change sig X             進入修改信令組頁面</syntaxhighlight>
+==== 2.2.7 monitor 命令 ====
+
+<syntaxhighlight lang="shell">monitor bcms system           檢視系統各尋線組的執行情況，每一分鐘鍾重新整理一次
+monitor bcms skill x          檢視該技能組的詳細登入成員情況，每一分鐘重新整理一次
+monitor traffic trunk-group   檢視中繼組的線路佔用情況，每一分鐘重新整理一次
+monitor traffic hunt-group    檢視尋線組的線路佔用情況，每一分鐘重新整理一次
+monitor bcms vdn X            監測VDN號“X”的狀況</syntaxhighlight>
+
+
+=== 2.3 拨号计划 ===
+
+<blockquote>dialplan拨号计划如何处理<code>被叫号码</code> ，即当系统内部话机拨号时，所拨打的号码需要在这张表中进行处理，才之后下一步的路由。
+</blockquote>
+==== 2.3.1 查看拨号路由 dialplan ====
+
+在ASA的命令行输入<code>display dialplan analysis</code>
+
+<syntaxhighlight lang="shell">display dialplan analysis
+                             DIAL PLAN ANALYSIS TABLE
+                                   Location:  all           Percent Full:    2
+
+       Dialed   Total  Call    Dialed   Total  Call     Dialed   Total  Call
+       String   Length Type    String   Length Type     String   Length Type
+     0            1    ext    #           3    fac
+     1            4    ext    #4          4    dac
+     10           4    ext
+     17           4    ext
+     2            4    ext
+     3            4    ext
+     4            4    ext
+     5            4    ext
+     6            4    ext
+     7            4    ext
+     8            4    ext
+     87           4    ext
+     88           6    ext
+     9            1    fac
+     *            3    fac
+
+</syntaxhighlight>
+上表中，每三列为一组，每页显示三组。
+
+
+
+以第一组第2个为列解释：
+
+<syntaxhighlight lang="shell"> Dialed   Total  Call   
+ String   Length Type 
+ 1           4    ext </syntaxhighlight>
+该行表示以<code>1</code>开头的四位分机号，例如：
+
+用户拨打<code>1111</code>则会匹配到这个路由计划。
+
+输入<code>`display dialplan analysis</code> 查看系统的拨号方案
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526154523273.png|thumb|none]]
+
+{|
+! dialed string
+! TotalLength
+! Calltype
+|-
+| 拨号的字符串
+| 拨号的整个号码长度
+| 应该匹配的类型
+|-
+| [0-9]
+| [1-2]
+| attd:定义用户呼叫话务员.如果在fac中启用了attendant access code area,则无法配置attd，只能配置fac
+|-
+| 
+| 
+| ext:分机号
+|-
+| 
+| 
+| aar（自动路由迂回）：专网呼叫公司内部路由。使用这个必须激活<code>ARS/AAR Dialing without FAC</code>不适用FAC进行ARS和AAR呼叫的系统参数，可以输入<code>display system-parameters customer-options</code>查看对应的系统参数是否激活：[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\image-20210526160335275-2016240.png|fig:]]<br />
+[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\image-20210526160416956-2017286.png|fig:]]<br />
+AAR中的AAR Digit Conversio功能可以进一步做号码转换
+|-
+| 
+| 
+| asr（自动路由选择）：路由到公网的呼叫，ARS中有ARS Digit Conversion可以进一步做好吗转换
+|-
+| 拨号接入码可以是以 1 至 9 的任何数字开始，最多包含四位数字。第一位数字也可以是 * 和 #。
+| [1-4]
+| fac（功能接入码）：包含了许多功能[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210526163602210.png|fig:]]
+|-
+| 拨号接入码可以是以 1 至 9 的任何数字开始，最多包含四位数字。第一位数字也可以是 * 和 #。
+| [1-4]
+| dac：拨号接入码(包含了中继接入码tac和功能接入码fac)，也就是说上图中#400-#499这100个号码中可以同时匹配tac和fac
+|}
+
+可以使用如下命令修改拨号方案：
+
+输入<code>change dialplan analysis</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210701145622016.png|thumb|none]]
+
+===== 2.3.1.1 '''DialedString'''  =====
+
+<blockquote>匹配被叫号码（将所拨号码从头开始匹配）
+</blockquote>
+===== 2.3.1.2 '''Total Length''' =====
+
+<blockquote>完整被叫号码的长度
+</blockquote>
+===== 2.3.1.3 '''CallType''' =====
+
+<blockquote>calltype指示下一步路由需要在哪些表中查询（如ars表、aar表等）
+</blockquote>
+====== 2.3.1.3.1 ''ext'' ======
+
+分机，在<code>list station</code>可以查看所有分机号.这意味着在做内部呼叫。
+
+====== 2.3.1.3.2 ''attd'' ======
+
+Attendant Console，只需要拨打一位号码，直接转到话务台。话务员接入码可以是0到9中的任何数字并且仅包含1位或者2位数字。
+
+如果在<code>FAC（fuature Access Code）</code>中使用了<code>Attendant Access Code</code>字段，那么这里就无法输入<code>attd</code>.
+
+====== 2.3.1.3.3 ''dac'' ======
+
+可以匹配tac+fac
+
+tac（trunk access code）
+
+fac（feature access code）
+
+====== 2.3.1.3.4 FAC 功能接入码 ======
+
+<blockquote>FAC（feature access code）在FAC处配置完成后，必须在dialplan处配置后才能生效，否则无法使用。
+</blockquote>
+{|
+! 名称
+! 作用
+|-
+| Abbreviated Dialing List1 Access Code:
+| 缩位拨号列表1接入码
+|-
+| Abbreviated Dialing List2 Access Code:
+| 缩位拨号列表2接入码
+|-
+| Abbreviated Dialing List3 Access Code:
+| 缩位拨号列表3接入码
+|-
+| Abbreviated Dial - Prgm Group List Access Code:
+| 缩位拨号 – 程序组列表接入码
+|-
+| Announcement Access Code:
+| 录制语音宣告欢迎词的接入
+|-
+| Answer Back Access Code:
+| 取回驻留呼叫的功能接入码
+|-
+| Attendant Access Code:
+| 呼叫话务台功能代码
+|-
+| Auto Alternate Routing (AAR) Access Code:
+| 进入专网的功能码
+|-
+| Auto Route Selection (ARS) - Access Code 1:
+| 进入公网的功能码
+|-
+| Automatic Callback Activation:
+| 用于激活/取消自动回叫的功能码
+|-
+| Call Forwarding Activation Busy/DA: *100 All:
+| 激活/取消呼叫转移的功能码
+|-
+| Call Forwarding Enhanced Status: Act:
+| 激活/取消呼叫转移增强型的功能码
+|-
+| Call Park Access Code:
+| 用于设置呼叫驻留的功能码
+|-
+| Call Pickup Access Code:
+| 用于设置代接(组群的代接)的功能码
+|-
+| CAS Remote Hold/Answer Hold-Unhold Access Code:
+| 用于呼叫保留及远程应答的功能码
+|-
+| CDR Account Code Access Code:
+| 用于CDR计费标示输入的功能码
+|-
+| Change COR Access Code:
+| 用于修改分机COR等级的功能码
+|-
+| Change Coverage Access Code:
+| 用于远程修改分机不同涵盖路径的功能码
+|-
+| Contact Closure Open Code:
+| 用于关掉或打开一个联络关闭的功能码
+|-
+| Contact Closure Pulse Code:
+| 
+|-
+| Data Origination Access Code:
+| 从语音设备发起一个数据呼叫的功能码
+|-
+| Data Privacy Access Code:
+| 用于从呼叫等待或其他中断隔离一个数据呼叫
+|-
+| Directed Call Pickup Access Code:
+| 用于指定代接的功能码(功能码+振铃分机号)
+|-
+| Directed Group Call Pickup Access Code:
+| 用于指定组代接的功能码
+|-
+| Emergency Access to Attendant Access Code:
+| Emergency Access to Attendant 在System-Parameters Customer-Options中为enabled时可用. 用于进入紧急呼叫话务台的功能码
+|-
+| EC500 Self-Administration Access Codes:
+| EC500功能自己管理的功能码
+|-
+| Enhanced EC500 Activation:
+| 增强型EC500功能激活的功能码
+|-
+| Enterprise Mobility User Activation:
+| 企业灵活性分机用户激活的功能
+|-
+| Extended Call Fwd Activate Busy D/A All:
+| 用于从本地或远程设置某一话机的呼叫前转的功能码
+|-
+| Extended Group Call Pickup Access Code:
+| 扩展的组代接功能码
+|-
+| Facility Test Calls Access Code:
+| 用于测试呼叫的功能码 针对模拟中继
+|-
+| Flash Access Code:
+| 用于可被中心局交换机识别的中继闪断功能码
+|-
+| Group Control Restrict Activation:
+| 用于更改其它分机COS的功能码,需授权
+|-
+| Hunt Group Busy Activation:
+| 可将寻线组置忙或解除的功能码
+|-
+| ISDN Access Code:
+| 用于呼叫ISDN的功能码而不使用ARS,AAR或UDP
+|-
+| Last Number Dialed Access Code:
+| 用于重拨最后一个所拔号码的功能码
+|-
+| Leave Word Calling Message Retrieval Lock:
+| 用于锁定信息显示屏的功能码
+|-
+| Leave Word Calling Message Retrieval Unlock:
+| 用于解除已锁定的信息显示屏的功能码
+|-
+| Leave Word Calling Send A Message:
+| 用于发布一条留言的功能码
+|-
+| Leave Word Calling Cancel A Message:
+| 用于取消发布一条留言的功能码
+|-
+| Limit Number of Concurrent Calls Activation:
+| 在一个分机上并发呼叫限制数目功能码
+|-
+| Malicious Call Trace Activation:
+| 用于追踪恶意呼叫的功能码
+|-
+| Meet-me Conference Access Code Change:
+| Meet-me 会议密码修改功能码
+|-
+| PASTE (Display PBX data on Phone) Access Code:
+| 用于配合IP坐席，允许一个用户在话机上查看呼叫中心数据的功能码
+|-
+| Personal Station Access (PSA) Associate Code:
+| 用于个人分机号码的登陆及登出
+|-
+| Per Call CPN Blocking Code Access Code:
+| 在一个中继组的CPN封闭是关闭的，当拨这个功能码时，用户可以打开，主叫方的号码不被发送到公网
+|-
+| Per Call CPN Unblocking Code Access Code:
+| 在一个中继组的CPN封闭是打开的，当拨这个功能码时，用户可以打开，主叫方的号码可以发送到公网
+|-
+| Posted Messages Activation:
+| 宣布信息激活功能码，需要在System Parameters Customer-Options 中打开
+|-
+| Priority Calling Access Code:
+| 优先权呼叫的功能码
+|-
+| Program Access Code:
+| 用于在个人话机上设置缩位拔号的功能码
+|-
+| Refresh Terminal Parameters Access Code:
+| 刷新终端参数的功能码，用于当系统设置改变时在个人话机上更新终端参数
+|-
+| Remote Send All Calls Activation:
+| 用于远程激活或解除Send All Calls功能码，需要控制许可
+|-
+| Self Station Display Activation:
+| 显示话机本身信息。方法是：输入一个功能代码后，在话机屏幕上显示该分机的号码，姓名、COR、COS、PORT。功能码在Change Feature 内定义.<br />
+数字话机显示自己的相关信息功能码 例如：分机号码，板卡端口号
+|-
+| Send All Calls Activation:
+| 用于发送所有呼叫的功能码，激活或解除分机将所有来话发送到一个涵盖路径上或者没有信号
+|-
+| Station Firmware Download Access Code:
+| 用于分机固件版本下载的功能码，仅2410/2420话机上可以使用
+|-
+| Station Lock Activation:
+| 用于锁定或解锁话机的功能码
+|-
+| Station Security Code Change Access Code:
+| 用于更改话机安全码的功能码
+|-
+| Station User Admin of FBI Assign:
+| 用于激活或解除设备繁忙的指示
+|-
+| Station User Button Ring Control Access Code:
+| 用于控制分机线路键或者桥接键的响铃方式，不响铃或者听得见
+|-
+| Terminal Dial-Up Test Access Code:
+| 用于测试数字话机及按键与交换机通讯的功能码
+|-
+| Terminal Translation Initialization Merge Code:
+| 启用TTI功能进行分机设置的功能码 ，当系统中的分机为X端口，可以使用此功能码将分机号指定到某一个物理端口上，或将端口上已经分配了的分机号改为X端口
+|-
+| Transfer to Voice Mail Access Code:
+| 用于转接到语音信箱的功能码
+|-
+| Trunk Answer Any Station Access Code:
+| 用于中继应答在任何一个分机上
+|-
+| User Control Restrict Activation:
+| 用于更改分机约束级别的功能码
+|-
+| Voice Coverage Message Retrieval Access Code:
+| 允许通过数字显示终端取另一分机信息的功能码
+|-
+| Voice Principal Message Retrieval Access Code:
+| 允许用户通过一个数字显示模块在另一名用户上取回属于自己的语音信息功能码。
+|-
+| Whisper Page Activation Access Code:
+| 耳语激活功能码
+|-
+| After Call Work Access Code:
+| 进入工作后处理状态时的功能码
+|-
+| Assist Access Code:
+| 用于寻求班长坐席帮助的功能码
+|-
+| Auto-In Access Code:
+| 进入自动接听电话状态时的功能码
+|-
+| Aux Work Access Code:
+| 当座席进入非ACD状态时的功能码（例如：小休'''）'''
+|-
+| Login Access Code:
+| 登陆进入ACD状态（准备）的功能码
+|-
+| Logout Access Code:
+| 退出ACD状态的功能码
+|-
+| Manual-in Access Code:
+| 进入下一ACD任务时所需的功能码
+|-
+| Service Observing Listen Only Access Code:
+| 仅监听某个坐席的功能码
+|-
+| Service Observing Listen/Talk Access Code:
+| 监听坐席并可以和坐席对话
+|-
+| Service Observing No Talk Access Code:
+| 监听某个坐席但是不可以对话
+|-
+| Add Agent Skill Access Code:
+| 给某个坐席加技能组的功能码
+|-
+| Remove Agent Skill Access Code:
+| 删除某个坐席技能的功能码
+|-
+| Remote Logout of Agent Access Code:
+| 远程退出坐席登录的功能码
+|}
+
+这个和思科的FAC（Force Authzation Code）不是一样的，Cisco 的FAC和Avaya中的Authorization Code保持一致，用户控制终端用户的呼叫权限。
+
+====== 2.3.1.3.5 AAR 自动路由迂回 ======
+
+主要用于系统的内部呼叫。
+
+主要场景有内部分机互拨，内部系统号码等。
+
+使用命令<code>list aar ana</code>可以查看系统中的aar分析表：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210608140920208.png|thumb|none]]
+
+<code>list aar digit-conversion</code> 可以查看aar的号码转换
+
+<code>list aar route-chosen n</code> <code>n</code> 为所拨打的号码
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210608141626553.png|thumb|none]]
+
+====== 2.3.1.3.6 ARS 自动路由选择 ======
+
+ARS（Automatic Route Selection）
+
+ARS是针对出局呼叫选择路由的。ARS通过<code>ARS Digit Analysis Table</code>来处理出局的被叫号码，并使用COR和FRL来确定主叫权限。
+
+AAR/ARS的呼叫匹配流程
+
+PBX-&gt;dial-plan-&gt;AAR/ARS-&gt;Route Patten-&gt;TRUNK-Group
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210607183652298.png|thumb|none]]
+
+ARS digit analysis table 符合精确匹配原则。
+
+使用命令<code>disp ars ana xxx</code> xxx为所拨打的号码，则显示的第一条即为所匹配的路由。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210607181956737.png|thumb|none]]
+
+在Avaya Call manager中可以下如下列表中查询
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210607184127693.png|thumb|none]]
+
+<blockquote>在dial-plan中如果需要使用AAR/ARS功能，那么在系统参数中的<code>ARS/AAR Dialing without FAC</code> 参数必须设置为<code>y</code>，否则AAR/ARS则需要在FAC中调用。
+
+使用<code>display system-parameters customer-options</code> 来查看参数
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210608135804975.png|thumb|none]]
+</blockquote>
+====== 2.3.1.3.7 UDP（uniform dialplan） ======
+
+外部系统与Avaya系统集成，并且这个外部系统的号码从本地avaya系统需要路由过去，则将号码定位为UDP号码。比如
+
+如果avaya系统需要和第三方的系统对接，第三方系统上的号码为7xxx，那么在avaya系统上需要定义7xxx的号码规则为UDP的类型。
+
+==== 2.3.2 寻号规则 ====
+
+<blockquote>该小节主要解释avaya的号码路由的匹配流程，并解释路由如何搭配呼叫权限来进行匹配。
+</blockquote>
+===== 2.3.2.1 呼叫权限 =====
+
+====== 2.3.2.1.1 FLR （Fatility Restrict Level ）呼叫能力级别 ======
+
+最重要的一个参数，它定义了一个分机能够使用的路由范围，
+
+只有当COR中的FLR值大于Route Pattern中的FLR值才能够私用该条路由；
+
+FLR分为0-7，数字越大，权限越大。
+
+====== 2.3.2.1.2 COR (Class of Restriction) ======
+
+<blockquote>cor用于限制主叫权限.比如定义一个系统用户的呼叫权限，是否可以外呼，就需要对用户的COR进行配置。
+</blockquote>
+查看系统所有cor：
+
+<syntaxhighlight lang="shell">list cor</syntaxhighlight>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630171600232.png|thumb|none]]
+
+查看某个COR的权限信息
+
+<syntaxhighlight lang="shell">dislplay cor 1
+着重关注`FRL`，`Time of Day Chart` 这几个参数</syntaxhighlight>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630171955010.png|thumb|none]]
+
+COR中的FRL和Time of Day Chart决定了该COR能够使用的Router pattern
+
+只有当主叫用户的COR中的FRL值大于Router Patten中的FRL值时，该路由才能够被主叫用户匹配到。
+
+Router Pattern中的FRL值如下：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630181308095.png|thumb|none]]
+
+====== 2.3.2.1.3 COS(Class of Service ) ======
+
+COS定义了一个用户能够访问的功能。COS不适用于trunk-group。
+
+最多可以管理 16 个不同的 COS 编号（0 到 15）。为系统启用租户分区后，您最多可以管理 100 个 COS 组，每个组有 16 个服务等级。
+
+该屏幕列出了每个 COS 或功能组合的默认值。对于特定组合，<code>y</code>用于访问该功能，<code>n</code>用于拒绝访问。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630181607421.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630181639381.png|thumb|none]]
+
+如果系统启用了租户Tenant的概念 (<code>Tenant partitionig</code> 参数设置为<code>y</code>)
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630182202083.png|thumb|none]]
+
+可以通过如下命令对cos进行修改：
+
+<syntaxhighlight lang="shell">display cos-group x 查看cos组
+change cos-group x  修改cos组</syntaxhighlight>
+如果启用了租户的配置，那么定义一个station的cos的权限需要有station中的TN和COS两个参数来决定
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630182617434.png|thumb|none]]
+
+如果TN是1 ，COS是6 那么应该查看cos-group 1 中的第6列来确定COS的权限。
+
+
+
+====== 2.3.2.1.4 partition-router-table ======
+
+分区路由表用于同意额PBX需要为多个租户路由出局多个TRUNK（即不同租户从自己的中继线路出局）
+
+一般用于ARS表中的下一步路由，如图所示ARS的下一步为<code>P1</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210701134601078.png|thumb|none]]
+
+<code>p1</code>对应着 <code>partition-route-table</code> 中的<code>Route Index</code>的<code>1</code>（即第一行） 
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210630115500252.png|thumb|none]]
+
+下一步则需要确认COR权限中的<code>Time of Chart</code>的值是多少，如下图所示的<code>Time of Chart</code>值为1，那么确认在<code>partition-route-table</code>中<code>PGN1</code>（即第一列），最后确定走router pattern <code>1</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210701141519558.png|thumb|none]]
+
+<blockquote>总结如下：
+
+# 在ars表中的 <code>px</code> (x为数字)，可以对应partition-route-table 中的<code>route-index x</code>;
+# cor中的<code>time of day chart x</code> 对应 <code>PGN x</code>;
+# 由上面两个交叉确定了下一步的router-pattern的编号（即为交叉点的数字）；
+</blockquote>
+====== 2.3.2.1.5 路由匹配流程 ======
+
+路由匹配如下图所示：
+
+从终端拨号到找到对应的路由router-pattern
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210701142219545.png|thumb|none]]
+
+router-pattern的匹配逻辑如下：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210701142431573.png|thumb|none]]
+
+==== 2.3.3 号码规划 ====
+
+<blockquote>Avaya系统中所有的通话路由都是由号码进行路由的。所以在这几系统之前要做好号码规划，分机号段、trunk号段等等。这里解释介个比较重要的系统路由点。
+</blockquote>
+===== 2.3.3.1 Station 分机 =====
+
+Station用于管理电话（包括模拟话机、数字话机、IP话机、软电话等）；
+
+如果需要修改某一个分机，运行如下命令：
+
+<syntaxhighlight lang="shell">change station n ,n是station number</syntaxhighlight>
+如果需要添加一个分机则运行如下命令：
+
+<syntaxhighlight lang="shell">add station n</syntaxhighlight>
+
+
+====== 分机类型 ======
+
+
+   
+      电话类型
+      模型
+      作为管理
+   
+   
+      单线模拟
+      500
+      500
+   
+   
+      
+      2500 和 2500 带有消息等待附件
+      2500
+   
+   
+      
+      6210
+      6210
+   
+   
+      
+      6211
+      6210
+   
+   
+      
+      6218
+      6218
+   
+   
+      
+      6219
+      6218
+   
+   
+      
+      6220
+      6220
+   
+   
+      
+      6221
+      6220
+   
+   
+      来电显示
+      带来电显示的模拟电话
+      来电显示
+   
+   
+      
+      7101A 和 7102A
+      7101A
+   
+   
+      
+      7103A 可编程和原装
+      7103A
+   
+   
+      
+      7104A
+      7104A
+   
+   
+      
+      8110
+      8110
+   
+   
+      
+      DS1FD
+      DS1FD
+   
+   
+      
+      7302H、7303H
+      7303S
+   
+   
+      
+      带有 C 和 D 音的语音响应单元 (VRU)
+      VRU
+   
+   
+      
+      无 C 和 D 音的 VRU
+      2500
+   
+   
+      单线 DS1/DSO（线路侧 T1/DS1）
+      无前向断开的 DS1 设备
+      运维
+   
+   
+      
+      带前向断开的 VRU，无 C 和 D 音
+      DS1FD 或 DS1SA
+   
+   
+      
+      带前向断开的 VRU，无 C 和 D 音
+      VRUFD 或 VRUSA
+   
+   
+      终端
+      510D
+      510
+   
+   
+      
+      515BCT
+      515
+   
+   
+      多外观混合
+      7303S
+      7303S、7313H
+   
+   
+      
+      7305H
+      7305S
+   
+   
+      
+      7305S
+      7305S、7316H、7317H
+   
+   
+      
+      7309H
+      7309H、7313H
+   
+   
+      
+      7313H
+      7313H
+   
+   
+      
+      7314H
+      7314H
+   
+   
+      
+      7315H
+      7315H
+   
+   
+      
+      7316H
+      7316H
+   
+   
+      
+      7317H
+      7317H
+   
+   
+      多外观数码
+      2402
+      2402
+   
+   
+      
+      2410
+      2410
+   
+   
+      
+      2420
+      2420
+   
+   
+      
+      6402
+      6402
+   
+   
+      
+      6402D
+      6402D
+   
+   
+      
+      6408
+      6408
+   
+   
+      
+      6408+
+      6408+
+   
+   
+      
+      6408D
+      6408D
+   
+   
+      
+      6408D+
+      6408D+
+   
+   
+      
+      6416D+
+      6416D+
+   
+   
+      
+      6424D+
+      6424D+
+   
+   
+      
+      7401D
+      7401D
+   
+   
+      
+      7401+
+      7401+
+   
+   
+      
+      7403D
+      7403D
+   
+   
+      
+      7404D
+      7404D
+   
+   
+      
+      7405D
+      7405D
+   
+   
+      
+      7406D
+      7406D
+   
+   
+      
+      7406+
+      7406+
+   
+   
+      
+      7407D
+      7407D
+   
+   
+      
+      7407+
+      7407+
+   
+   
+      
+      7410D
+      7410D
+   
+   
+      
+      7410+
+      7410+
+   
+   
+      
+      7434D
+      7434D
+   
+   
+      
+      7444D
+      7444D
+   
+   
+      
+      8403B
+      8403B
+   
+   
+      
+      8405B
+      8405B
+   
+   
+      
+      8405B+
+      8405B+
+   
+   
+      
+      8405D
+      8405D
+   
+   
+      
+      8405D+
+      8405D+
+   
+   
+      
+      8410B
+      8410B
+   
+   
+      
+      8410D
+      8410D
+   
+   
+      
+      8411B
+      8411B
+   
+   
+      
+      8411D
+      8411D
+   
+   
+      
+      9408
+      9408
+   
+   
+      
+      9404
+      9404
+   
+   
+      
+      呼叫大师我
+      602A1
+   
+   
+      
+      CALLMASTER II, CALLMASTER III, CALLMASTER IV
+      603A1、603D1、603E1、603F1
+   
+   
+      
+      呼叫大师 VI
+      606A1
+   
+   
+      
+      IDT1
+      7403D
+   
+   
+      
+      IDT2
+      7406D
+   
+   
+      IP电话
+      4601+
+      4601+
+   
+   
+      
+      笔记：
+      
+   
+   
+      
+      添加新的 4601 IP 电话时，必须使用 4601+ 分机类型。此站类型启用了自动回叫功能。
+      
+   
+   
+      
+      4602+
+      4602+
+   
+   
+      
+      笔记：
+      
+   
+   
+      
+      添加新的 4602 IP 电话时，必须使用 4602+ 分机类型。此站类型启用了自动回叫功能。
+      
+   
+   
+      
+      4606
+      4606
+   
+   
+      
+      4610
+      4610
+   
+   
+      
+      4612
+      4612
+   
+   
+      
+      带有 G3.5 硬件的 4620SW IP
+      4620
+   
+   
+      
+      4621
+      4621
+   
+   
+      
+      4622
+      4622
+   
+   
+      
+      4624
+      4624
+   
+   
+      
+      4625
+      4625
+   
+   
+      
+      4690
+      4690
+   
+   
+      
+      9611
+      9611
+   
+   
+      
+      9621
+      9621
+   
+   
+      
+      9630
+      9630
+   
+   
+      
+      9641
+      9641
+   
+   
+      
+      9650
+      9650
+   
+   
+      SIP IP电话
+      4602SIP 带 SIP 固件
+      4620SIP
+   
+   
+      
+      4610SIP 带 SIP 固件
+      
+   
+   
+      
+      9608SIPCC
+      
+   
+   
+      
+      9611SIPCC
+      
+   
+   
+      
+      9621SIPCC
+      
+   
+   
+      
+      9641SIPCC
+      
+   
+   
+      
+      4620SIP 带 SIP 固件
+      
+   
+   
+      
+      SIP 软电话或 Avaya one-X Desktop
+      
+   
+   
+      
+      东芝 SP-1020A
+      
+   
+   
+      
+      笔记：
+      
+   
+   
+      
+      任何用于 SIP 网络的带有 SIP 固件的模型电话必须作为 4620SIP、96xxSIP 或 16CC 电话进行管理。
+      
+   
+   
+      
+      笔记：
+      
+   
+   
+      
+      Communication Manager 6.2 版及更高版本不支持 1616SIP CC 和 4620SIP CC 电话。
+      
+   
+   
+      
+      9601SIP
+      9608SIP
+   
+   
+      
+      9620、9630、9630G 9640、9640G 带 SIP 固件
+      96xx 或 96xxSIP 电话
+   
+   
+      
+      9608 带 SIP 固件
+      —
+   
+   
+      
+      9611 带 SIP 固件
+      9611SIP
+   
+   
+      
+      9621 带 SIP 固件
+      9621SIP
+   
+   
+      
+      9641 带 SIP 固件
+      9641SIP
+   
+   
+      
+      Avaya J129 IP 电话
+      J129
+   
+   
+      
+      Avaya J169 IP 电话
+      J169
+   
+   
+      
+      Avaya J179 IP 电话
+      J179
+   
+   
+      
+      J169CC IP话机
+      J169CC
+   
+   
+      
+      J179CC IP电话
+      J179CC
+   
+   
+      H.323 软电话
+      Road Warrior application
+      H.323 或 DCP 类型
+   
+   
+      
+      本地 H.323
+      H.323
+   
+   
+      
+      单连接
+      H.323 或 DCP 类型
+   
+   
+      
+      任何 NI-BRI N1 和 N2 电话
+      NI-BRI
+   
+   
+      
+      7505D
+      7505D
+   
+   
+      
+      7506D
+      7506D
+   
+   
+      
+      7507D
+      7507D
+   
+   
+      
+      8503D
+      8503D
+   
+   
+      
+      8510T
+      8510T
+   
+   
+      
+      8520T
+      8520T
+   
+   
+      个人电脑
+      6300 或 7300
+      个人电脑
+   
+   
+      语音或数据
+      6538 或 6539
+      星座
+   
+   
+      测试线
+      自动取款机
+      105TL
+   
+   
+      无硬件管理
+      —
+      XDID 或 XDIDVIP
+   
+   
+      按键电话系统界面
+      —
+      K2500
+   
+   
+      无硬件管理
+      任何数字集
+      —
+   
+   
+      
+      计算机电话集成 (CTI) 站
+      CTI
+   
+   
+      CTI
+      CTI station
+      CTI
+   
+   
+      XMOBILE
+      EC500、DECT 或 PHS
+      XMOBILE
+   
+   
+      ISDN-BRI 数据模块
+      7500
+      7500
+   
+   
+      承载和信令分离 (SBS) 扩展
+      无硬件的 SBS 测试扩展
+      SBS
+   
+   
+      
+   
+
+
+
+
+分机类型举例：
+
+ '''''*2500*'' *''模拟分机*'''''
+
+ '''''*6408D+*'' *''数字分机*'''''
+
+ '''''*607A*''''' '''CallMaster''' '''V/VI''' '''''*专用坐席分机*''''' 
+
+ '''''*ds1fd*'' *''IVR*''*''分机（*''*''Line Side E1*''*''）*'''''
+
+ '''''*4606/12/30*'' *''IP*''*''电话分机*'''''
+
+ '''''*asai*'' *''CTI*''*''分机*'''''
+
+{|
+! 分机类型
+! 标示
+|-
+| 模拟分机
+| 
+|-
+| 数字分机
+| 
+|-
+| IP分机
+| 
+|-
+| CTI分机
+| 
+|-
+| IVR分机
+| 
+|-
+| 坐席分机
+| 
+|}
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603132644864.png|thumb|none]]
+
+====== 删除分机号 ======
+
+<code>remove station &lt;ext&gt;</code>
+
+====== 添加分机号 ======
+
+<code>list configuration all</code>查看板卡端口使用情况
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210701154624192.png|thumb|none]]
+
+<code>Board Number</code>槽位号
+
+{|
+! 板卡名称
+! 作用
+|-
+| ICC MM
+| 
+|-
+| DS1 MM
+| 
+|-
+| ANALOG LINE
+| 模拟板卡
+|-
+| VAL-ANNOUNCEMENT
+| 
+|}
+
+===== 2.3.3.2 Trunk =====
+
+====== 查看TRUNK状态 ======
+
+<code>status trunk &lt;1-200&gt;</code>
+
+中继类型
+
+{|
+! 中继组类别
+! 中继组名称
+|-
+| 模拟中继
+| 
+|-
+| 数字中继（ISDN PRI/BRI）
+| 
+|}
+
+中继组类型：
+
+# CO
+
+市话局 （CO）中继群主要是将你的交换机连接到本地中心局，但也可连接象外部寻呼系统和数据模<br />
+块之类的附属设备。
+
+2.DID
+
+直拨内线号 （DID）中继群将呼入直接接通到内部分机，而不经过话务员或其它市话点。
+
+3.ISDN
+
+综合业务数字网（ISDN）中继群允许随呼叫发送话音、数据、视频和信令信息。<br />
+ISDN 中继群又分为两种类型：<br />
+ISDN- 基本速率接口（ISDN-BRI）中继群，用于将话机、个人计算机和其他桌面设备连接到交换机。<br />
+ISDN- 基群速率接口（ISDN-PRI）中继群，用于将设备（例如交换机）连接到网络并且作为设备<br />
+（例如交换机和计算机）之间的接口 。
+
+===== 2.3.3.3 Hunt-group =====
+
+Split(Elit ACD) 豪华版技能组
+
+固定分机作息，bcmsvn-agentID仅仅用于BCMS报表统计
+
+Skill（Delux ACD）精英版技能组
+
+逻辑坐席，可在任意分机上登录，可同时登录多个技能组
+
+一般寻线组---用于IVR
+
+
+
+===== 2.3.3.4 VDN&amp;Vector =====
+
+<blockquote>VDN虚拟引导号码;
+
+Vector虚拟引导路径（脚本）;
+</blockquote>
+
+
+VDN和Vector的作用就是告诉系统如何处理<code>呼入</code>的呼叫,一个Vector脚本可以设置最多32个step，来为用户提供个性化的呼叫路由的选择。
+
+每个VDN对应一个Vector，最终由Vector将呼叫路由到对应地方。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603142932097.png|thumb|none]]
+
+
+
+=== 2.4 详细场景操作 ===
+
+==== 2.4.1 话机管理 ====
+
+<blockquote>avaya系统并不是一个纯IP的语音解决方案，所以他的话机类型包含了模拟话机，数字话机，和IP话机。进行话机管理之前需要确认话机的类型从而来确定对应的操作步骤。
+</blockquote>
+===== 2.4.1.1 新增话机的简要操作总结 =====
+
+# 确定话机型号，模拟的、IP、数字、ISDN、还是混合的；
+# 查找可用的话机端口（<code>list configuration stations</code>），未使用端口由符号<code>u</code>表示，记录话机端口地址（板卡号+端口号）;
+# 记录端口号与话机分配的分机号；
+# 添加话机<code>add station xxx</code> xxx是分机号；
+# Type字段输入话机的型号；
+# port字段输入端口地址，如果是IP电话，则不需要填写Port字段，自动填写为<code>IP</code>；
+# Name区域填写类似于<code>名字+分机号</code>的内容，内容将会显示在被叫话机上；
+# 如果需要改变某一个话机的某些设置需要，输入<code>change station xxx</code>;
+
+
+
+===== 2.4.1.2 添加硬件话机 =====
+
+# 模拟或者数字话机需要有对应的板卡和接口，所以需要首先检查服务器的注册的并且时可用的接口；
+
+<code>DS1</code>是数字板卡
+
+<code>ANA</code>是模拟板卡
+
+如果是需要添加IP话机，则不用这一步，直接跳转到第三步
+
+在ASA输入如下命令：
+
+<syntaxhighlight lang="shell">list con all</syntaxhighlight>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210705162933666.png|thumb|none]]
+
+看到<code>001v3</code> 模拟板卡的接口未使用(接口显示<code>u</code>)，那么我们使用第一个端口，则端口编号为<code>01</code>
+
+那么话机的地址为<code>001v301</code>（即<code>板卡编号+端口号</code>），记住这个地址；
+
+<ol style="list-style-type: decimal;">
+<li><p>将要注册的话机（数字或者模拟话机），链接到对应的板卡接口上；</p></li>
+<li><p>在Avaya CM系统上添加分机号和话机。</p>
+<p>在ASA管理软件中，连接CM，输入如下命令后，按<code>Enter</code>：</p>
+<syntaxhighlight lang="shell">add station n  //n是新话机的分机号</syntaxhighlight>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210705180127703.png|thumb|none]]
+</li></ol>
+
+ 在<code>Type</code>填写话机的型号，根据填写的uaji类型，页面选项会有变动。（如果填写的是IP话机你，啊么在Port位置直接会显示<code>IP</code>,就不需要填写对应的端口地址了，在IP电话注册后，会自动生成<code>S</code>开头的端口地址）
+
+ 在<code>Port</code>填写刚才记住的话机地址，即<code>001v301</code>（板卡号+端口号）
+
+ 在<code>Name</code>处键入一个和话机相关的名字，这个名字将显示在被叫话机的来电显示上。
+
+在<code>TN</code>、<code>COR</code>、<code>COS</code>中填写对应的权限，如果有<code>Coverage Path</code>那么在对应位置填写呼叫涵盖的值。
+
+
+
+
+
+===== 2.4.1.4 添加IP 软电话 =====
+
+Avaya使用One-X系列的软电话
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706102006256.png|thumb|none]]
+
+注册软电话流程与注册硬件IP电话类似。
+
+可以使用<code>list registered-ip-stations</code>查看注册话机
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706103541802.png|thumb|none]]
+
+<ol style="list-style-type: decimal;">
+<li><p>输入<code>add station n</code>（n为分机号）</p></li>
+<li><p>输入如下值，完成后点击<code>Enter</code>：</p>
+<p><code>Type</code>:1608(只要是IP话机的类型软电话都可以注册)</p>
+<p><code>Name</code>:test</p>
+<p><code>Secure Code</code>:1234</p>
+<p><code>IP SoftPhone</code> : Y</p></li></ol>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706104541073.png|thumb|none]]
+
+设置软电话的注册服务器，双击打开软电话，打开设置
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706105254878.png|thumb|none]]
+
+添加注册服务器，选择使用的注册协议是H323还是SIP，点击确定后回到登陆页面
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706105502459.png|thumb|none]]
+
+点击登录；
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706105702311.png|thumb|none]]
+
+登录成功后可以看到软电话的界面。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706111019834.png|thumb|none]]
+
+===== 2.4.1.5 复制话机 =====
+
+如果系统之前有注册过同类型话机，需要在新注册同类型话机，那么我们可以通过复制之前的话即，进行简单那修改。
+
+输入如下命令：
+
+<syntaxhighlight lang="shell">duplication station x</syntaxhighlight>
+出现如图所示的，填写分机号和Name,可以批量添加同类型的话机。
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210706111503978.png|thumb|none]]
+
+===== 2.4.1.6 使用分机模版新建话机 =====
+
+<blockquote>可以通过复制已有的话机新增话机，或者建立话机模版，应用于整个话机组。（只有同型号的话机才能进行复制操作）
+</blockquote>
+<ol style="list-style-type: decimal;">
+<li><p><code>list sation</code>查看所有分机，找到自己需要复制的分机</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527154603922.png|thumb|none]]
+
+<p>或者使用GEDI的GUI页面显示分机，格式更易观看：</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527154948989.png|thumb|none]]
+</li>
+<li><p><code>display station xxx</code>,点击<code>ENTER</code>,核实是否是需要复制的话机，确认无误后点击<code>Cancel</code>；</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155344586.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155931162.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527155952828.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527160007535.png|thumb|none]]
+</li>
+<li><p><code>duplicate station xxx</code>,点击<code>ENTER</code>，建立话机模版；</p>
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527165038286.png|thumb|none]]
+</li>
+<li><p>输入每一部新话机的分机号，端口号，和话机名称；（更具话机类型的不同，创建的模版需要填写的内容不同）</p>
+<p></p></li></ol>
+
+===== 2.4.1.7使用话机类型别名创建话机 =====
+
+有些话机型号在当前版本的CM上没有，但是话机本省可以使用其他型号进行创建注册。
+
+输入<code>change alias station</code>创建别名：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528125731000.png|thumb|none]]
+
+<code>Alias Set Type</code>: 填写系统不支持的型号
+
+<code>Supported Set Type</code>:填写系统中支持的型号
+
+这种办法可能会导致新型号的话机部分功能无法使用。
+
+===== 2.4.1.8 查看分机号是否是某个组的成员 =====
+
+<code>list groups-of-extension xxx</code>
+
+==== 2.4.2 Avaya CM 安装补丁 ====
+
+ssh登录CM
+
+<syntaxhighlight lang="shell">ssh dadmin@10.150.9.10
+
+This system is restricted solely to authorized users for legitimate business
+purposes only. The actual or attempted unauthorized access, use or modifications
+of this system is strictly prohibited. Unauthorized users are subject to
+company disciplinary procedures and or criminal and civil penalties under state,
+federal or other applicable domestic and foreign laws.
+
+The use of this system may be monitored and recorded for administrative and
+security reasons. Anyone accessing this system expressly consents to such
+monitoring and recording, and is advised that if it reveals possible evidence
+of criminal activity, the evidence of such activity may be provided to law
+enforcement officials.
+
+All users must comply with all corporate instructions regarding the protection
+of information assets.
+Password:
+Last login: Wed Jun  2 14:56:49 CST 2021 from 10.200.14.96 on pts/0
+Enter your terminal type (i.e., xterm, vt100, etc.) [vt100]=>
+17389: old priority 0, new priority 0
+
+dadmin@SZ-MainServer></syntaxhighlight>
+avaya底层就是一个linux系统，可以使用linux命令
+
+可以查看自己的当前路径：
+
+<syntaxhighlight lang="shell">dadmin@SZ-MainServer> pwd
+/var/home/dadmin</syntaxhighlight>
+打开<code>/var/home/ftp/pub</code>的路径
+
+<syntaxhighlight lang="shell">dadmin@SZ-MainServer> cd /var/home/ftp/pub
+dadmin@SZ-MainServer> pwd
+/var/home/ftp/pub</syntaxhighlight>
+
+
+查看当前文件夹：
+
+<pre class="ba">dadmin@SZ-MainServer&gt; ll
+total 5140
+-rw-r--r-- 1 dadmin susers 4092623 Jul 20  2017 MST.M
+drwxr-xr-x 2 root   root      4096 Mar 20  2013 avaya
+-rw-r--r-- 1 root   root   1154357 Apr 23  2020 full_SZ-MainServer_163723_20200423.tar.gz</pre>
+查看可用命令：
+
+<syntaxhighlight lang="shell">dadmin@SZ-MainServer> dhelp
+Stingray Shell Commands
+
+-			    MessageTracer	 acpfindvers
+addDenialDesc		    admin_commands	 almcall
+almclear		    almdisplay		 almenable
+almnotif		    almsnmpconf		 almsummary
+almsuppress		    arbmtce		 authtype
+autosat			    border_bash		 callpppd
+catlog			    cert_cm_postinstall  cert_rsyslog_postinstall
+cert_web443_postinstall     cm_plat_ping	 cmpasswd
+cmuser			    cmuseradd		 cmuserdel
+cmusermod		    corevector		 csrmanage
+custalmopt		    defsat		 dhelp
+disp_dup_log		    displaydenialevents  dsat
+fips_mode		    fullCMrelease	 fwdlreason
+gemruleadmin		    getCertRepoData	 getCertUserAlarms
+get_lic_sed		    ipsi_qry		 ipsisession
+ipsiversion		    issmgrreachable	 licconvert
+licextract		    licmigrate		 listhistory
+loadcertificate		    loaddisplang	 loadipsi
+loadlicense		    loadstbyipsis	 locktrans
+logc			    logclear		 logecho
+loginreport		    logmst		 logr
+logv			    logw		 mo
+mta			    mv_lastlog		 mv_status
+oldloadipsi		    oldresetipsi	 outage
+pingall			    productid		 resetipsi
+resetstbyipsis		    restartcause	 rps
+rtps			    sat			 satSessions
+save_trans		    serialnumber	 server
+serverInitialNetworkConfig  setCertRepoData	 settrace
+sftp_removal		    sosmlogin		 start
+statapp			    statuslicense	 statusserver
+stop			    swversion		 systat
+telnetenable		    testalarm		 testcustalm
+testinads		    testinadsport	 testled
+topsting		    txt2xln		 unlocktrans
+unused_login_audit	    upd_pe_info		 update_activate
+update_commit		    update_deactivate	 update_guard
+update_info		    update_remove	 update_show
+update_unpack		    vilog		 wlog
+wmta			    xln2txt		 xlnrecovery</syntaxhighlight>
+输入update_uppack的命令将补丁文件解压缩
+
+<syntaxhighlight lang="shell">update_uppack <filename></syntaxhighlight>
+输入update_activate 安装补丁
+
+<syntaxhighlight lang="shell">update_activate <filename></syntaxhighlight>
+卸载补丁
+
+<syntaxhighlight lang="shell">update_deactivate <filename></syntaxhighlight>
+
+
+=== 2.5 功能管理 ===
+
+==== 2.5.1 改变功能参数 ====
+
+<code>display system-parameters feature</code> 查看系统功能参数
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528164138514.png|thumb|none]]
+
+<code>change system-parameters feature</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528164405207.png|thumb|none]]
+
+==== 2.5.2 设置短拨号(快速拨号) ====
+
+<code>list abbreviated-dialing group xxx</code> xxx为group的号码
+
+<code>add abbrevicated-dialing group next</code>添加快速拨号组
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165904329.png|thumb|none]]
+
+<code>Size</code>： 快速拨号清单中的号码个数，比如：如果需要添加8个快速拨号的号码，则在这里填写10。
+
+<code>Program Ext</code>： 允许填入的分机对快速拨号列表进行修改
+
+<blockquote>快速拨号添加号码，最长不超过26位
+</blockquote>
+
+
+添加完成快速拨号组之后，需要将其绑定到对应的分机上才能够生效：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165819785.png|thumb|none]]
+
+
+
+==== 2.5.3 设置代答组 pickup ====
+
+<code>list pickup-group</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528165554005.png|thumb|none]]
+
+<code>add pickup-group next</code> 一个pickup组最多50个分机号
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528170814523.png|thumb|none]]
+
+==== 2.5.4 定向代答组（directed Call Pickup） ====
+
+
+
+===== 2.5.4.1 拓展代答组 =====
+
+&lt;待补充&gt;
+
+
+
+==== 2.5.5 设置呼叫前转 ====
+
+<code>display system-parameters coverage-forwarding</code> 查看呼叫前转的参数，设置用户多长时间未应答则进行前转
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528174904526.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528174916780.png|thumb|none]]
+
+<code>list call-forwarding</code> 查看启用了呼叫前转的话机的号码
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528175614820.png|thumb|none]]
+
+==== 2.5.6 COS（Class of Service） ====
+
+COS不能适用于Trunk-group的远程接入功能，COS定义了话机用户本身能够访问的功能；
+
+COS最多分为16个等级（0-15）
+
+COS组最多一百个（系统必须启动分区-Tenant Partition）
+
+查看COS组内的权限功能：
+
+<code>display cos-group 1</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528181441545.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528181516995.png|thumb|none]]
+
+==== 2.5.7 建立涵盖路径 coverage path ====
+
+<code>coverage path</code>是指当呼入的呼叫没有应答时，设置这个呼叫按照顺序将呼叫路由到可处理的应答点，如果路由的应答点无法处理，则路由到下一个。应答点可以时分机号也可以是邮箱等。
+
+一个分机最多有6个涵盖点（应答点）
+
+<code>display coverage path x</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183447990.png|thumb|none]]
+
+<code>add coverage path next</code> 添加新的涵盖点
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183701965.png|thumb|none]]
+
+建立完成涵盖点后需要将分机下绑定涵盖路径：
+
+<code>change station xxx</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210528183844643.png|thumb|none]]
+
+==== 2.5.8 建立增强型涵盖路径 coverage path ====
+
+&lt;待补充&gt;
+
+==== 2.5.9 建立桥接呼叫 ====
+
+&lt;待补充&gt;
+
+== 第3章 TroubleShooting ==
+
+=== 常用命令 ===
+
+==== list命令 ====
+
+<blockquote>list 可以查看很多系统配置信息，对系统整体可以有个大概了解 
+</blockquote>
+===== 查看分机号 =====
+
+<code>list station</code>
+
+通过GEDI输入如上命令可以看到：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527152149922.png|thumb|none]]
+
+===== 查看注册分机号 =====
+
+<code>list registered-ip-sation</code>
+
+===== 追踪分机号 =====
+
+<code>list trace station xxx</code>
+
+===== 查看板卡 =====
+
+<code>list configuration all</code>
+
+端口地址=板卡号+端口号
+
+===== 查看IP接口 =====
+
+<code>list ip-interface all</code>
+
+===== 查看呼叫路由 =====
+
+<code>list route-pattern</code>
+
+===== 查看TRUNK-Group =====
+
+<code>list trunk-group</code>
+
+===== 查看语音网关 =====
+
+<code>list media-gateway</code>
+
+可以查看到CM注册上来的媒体网关，<code>Reg？</code>选项表明了该Media Gateway是否已经注册到CM上，并受到CM的管控。
+
+<blockquote>CM管理媒体网关，类易于思科的MGCP，所有语音配置都在CM上管理配置，网关上没有语音配置，只有基本的网络配置。
+</blockquote>
+[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\image-20210531153308499.png|thumb|none]]
+
+===== 查看系统日志 =====
+
+==== display命令 ====
+
+查看系统告警
+
+消除告警
+
+
+
+==== 追踪trunk ====
+
+<code>list trace tac xxx</code>
+
+==== 查看系统试试中继线路占用情况 ====
+
+<code>monitor traffic trunk-group</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603110913184.png|thumb|none]]
+
+==== 查看hunt-group的线路占用情况 ====
+
+<code>monitor traffic hunt-group</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603111116905.png|thumb|none]]
+
+==== 查看系统健康状况 ====
+
+<code>status health</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603111546682.png|thumb|none]]
+
+==== 查看系统软件许可 ====
+
+<code>display system-parameters customer-options</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603111910360.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603111929168.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603111943400.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603111956593.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112018950.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112032755.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112043953.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112055756.png|thumb|none]]
+
+
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112107501.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112122048.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603112137349.png|thumb|none]]
+
+==== 查看PBX系统版本 ====
+
+<code>list configuration software-version</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603113117379.png|thumb|none]]
+
+
+
+=== 出现命令<code>command</code> havs data locked ===
+
+* 问题描述：
+
+在命令框中输入<code>duplicate station xxx</code> 出现如下报错：
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210527172600244.png|thumb|none]]
+
+<ul>
+<li><p>问题分析</p>
+<p>这可能由于管理员在操作命令后，没有正确的退出命令，导致该条命令被lock。</p></li>
+<li><p>解决方案</p>
+<ol style="list-style-type: decimal;">
+<li><p>需要查看管理员的登录session状况，找到命令lock的管理员</p>
+<p>输入<code>status logins</code>可以看到所有管理员的登录状态，并且可以看到管理员当前正在使用的command</p>
+[[File:C:\Users\wangwei2\OneDrive\Blogs\Avaya\Avaya%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0.assets\image-20210527173802649.png|thumb|none]]
+
+<p>图片显示dadmin这个管理员正在使用<code>stat logins</code>这个命令。（这是以自己的账号演示，<code>*</code>表示这个管理员是你当前登录的管理员）</p>
+<ol style="list-style-type: decimal;">
+<li><p>输入<code>reset login-ID 3</code>将命令被lock的管理员账户重置、登出，从而解决问题。</p></li></ol>
+</li></ol>
+</li></ul>
+
+
+
+== 附录 ==
+
+=== AES 运维管理 ===
+
+
+
+Avaya Aura Application Enablement Services(AE Services)是一个用于支撑Avaya Aura Communication Manager(CM)的一个软件平台。AES提供了一个加强的API，协议族和Web服务用以增强CM与应用开发商，第三方软件提供商和系统集成商的合作。
+
+ AES运行在Linux平台上，与CM以及Avaya Contact Center紧密结合。AES提供了一个对已知应用的一个开放平台，同时也是下一代应用程序和商业解决方案的催化剂。
+
+ AES提供以下部署方案：
+
+* 将AES部署在Avaya Aura System Platform上
+* 将AES捆绑部署在服务器上。
+* 将AES软件单独部署。
+* 
+
+AES具有以下服务：
+
+\1. DMCC服务
+
+ Device,Media,and Call Control(DMCC)服务提供了一个第三方的呼叫控制以及自有的呼叫控制（设备控制和媒体控制）。DMCC SDK提供了Java,XML,.NET API。
+
+ DMCC自有呼叫控制：
+
+<ul>
+<li><p>具有设备控制的DMCC提供了配置DMCC软电话,增强支持软电话的CM电话或分机号码的独有或共享控制。DMCC软电话是一个电话或分机的实体，由AES创建并注册在CM上。</p></li>
+<li><p>具有媒体控制的DMCC提供了将通话录制为WAV格式的能力，也提供了将播放WAV文件的语音通知的能力。媒体会话控制同时也提供了一种客户应用通过RTP发送并接受TTY字符流的能力。应用程序能使用这种功能来部署Voice Carry Over(VCO)。TTY功能只有在客户媒体模式下才能使用。</p>
+<p>DMCC第三方媒体控制：</p></li>
+<li><p>具有呼叫控制服务的DMCC使用TSAPI服务来提供一个支持扩展的第三方呼叫控制的能力，比如停留呼叫，创建会议呼叫，改变呼叫，重新连接呼叫及监控呼叫控制事件等。</p>
+<p></p>
+<p>路由服务：</p></li>
+<li><p>路由服务允许应用请求和接收通话的路由指令。这些由客户路由服务器应用程序发出指令，基于CM提供的入呼叫信息。</p></li></ul>
+
+\2. TSAPI服务
+
+ Telephony Services API(TSAPI)是一个基于C/C++的提供一个完整的第三方的呼叫控制，如控制特定呼叫或分机，完成路由或入呼叫，接收事件提示，引起CM特征和查询CM信息的API。Java Telephony API(JTAPI)是TSAPI的一个客户侧接口，和TSAPI一样，提供第三方的呼叫控制。
+
+\3. Web服务
+
+ Web服务提供了''比细粒度API更高层次的抽象。Web服务使用Web Service Definition Language(WSDL)和Simple Object Access Protocol(SOAP)连接提供了更加方便通用的接入。''
+
+''4. CVLAN服务''
+
+ ''CallVisor LAN服务是一个基于C/C++的API，他用于使能应用程序与AES交换ASAI消息。CVLAN提供了一个全面的第三方呼叫控制能力，如控制特定呼叫或分机，完成入呼叫路由，接收事件消息，引出CM特征和查询CM信息。CVLAN是一个Avaya自有的协议，不用于新的应用程序开发。''
+
+''5. DLG服务''
+
+ *DEFINITY LAN Gateway(DLG)服务通过TCP/IP传送信息。也就是说DLG服务支持CM和AES之间的TCP/IP连接。DLG服务同时也用于传送ASAI/Q.931消息。DLG*是一个Avaya自有的协议，不用于新的应用程序开发。**
+
+=== 查看CTI link的状态 ===
+
+<code>status aesvcs cti-link</code>
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210603153603716.png|thumb|none]]
+
+=== G450 运维 ===
+
+=== 登录G450设备 ===
+
+<syntaxhighlight lang="shell">telnet <IP></syntaxhighlight>
+查看接口信息
+
+<syntaxhighlight lang="shell">SZ-G450-001(super)# show ip int b
+Showing 3 Interfaces
+      Interface             Address     Mask Method        Status
+------------------------- --------------- ---- ------ ---------------------
+USB-Modem                 10.3.248.253      30 manual      down                 
+Vlan 1                    10.150.9.7        24 manual      up                   
+Services                  192.11.13.6       30 manual      down   // Service Port在初始化时候连接，子网掩码是30位，所以用电脑连接到网管或者媒体服务器的ServicePort，要手动设置电脑IP位192.11.13.5/30</syntaxhighlight>
+
+
+查看系统信息
+
+<syntaxhighlight lang="shell">SZ-G450-001(super)# show system
+System Name             :
+System Location         :
+System Contact          :
+Uptime (d,h:m:s)        : 35,08:27:37
+Call Controller Time    : 16:49:45 02 JUN 2021
+Serial No               : 12TG41070194
+Model                   : G450
+HW Ready for FIPS       : No
+Chassis HW Vintage      : 1
+Chassis HW Suffix       : A
+Mainboard HW Vintage    : 2
+Mainboard HW Suffix     : B
+Mainboard FW Vintage    : 36.8.0
+LAN MAC Address         : cc:f9:54:26:a3:a0
+WAN1 MAC Address        : cc:f9:54:26:a3:a1
+WAN2 MAC Address        : cc:f9:54:26:a3:a2
+SERVICES MAC address    : cc:f9:54:26:a3:a3
+Memory #1               : 256MB
+Memory #2               : Not present
+Compact Flash Memory    : No CompactFlash card is installed
+PSU #1                  : 400W
+PSU #2                  : Not present
+Media Socket #1         : MP80 VoIP DSP Module
+Media Socket #2         : MP160 VoIP DSP Module
+Media Socket #3         : MP80 VoIP DSP Module
+Media Socket #4         : Not present
+FAN Tray                : Present</syntaxhighlight>
+查看G450媒体网关挂接的服务器
+
+<syntaxhighlight lang="shell">输入set mgc list ipaddress <CM ip address>将语音网关挂载到CM服务器
+SZ-G450-001(super)# show mgc list
+
+PRIMARY MGC HOST, Primary Search Time : 1 min(s)
+IPv4 Address         IPv6 Address
+-------------------- ----------------------------------------------
+10.150.9.10          -- Not Available --
+
+SECONDARY MGC HOST
+IPv4 Address         IPv6 Address
+-------------------- ----------------------------------------------
+10.101.100.10        -- Not Available --
+-- Not Available --  -- Not Available --
+-- Not Available --  -- Not Available --
+
+sls disabled</syntaxhighlight>
+显示这台G450的网管挂载在两台服务器之下
+
+这时使用ASA连接服务器输入：
+
+<code>add media-gateway x</code> x为网关编号，可以任意
+
+<code>list media-gateway</code> 可以看到媒体网关是否挂载成功(Num 1 几位该台，并且Reg列显示<code>y</code>为注册成功)
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210602170410005.png|thumb|none]]
+
+[[File:http://markdown-bluebaozi.oss-cn-shanghai.aliyuncs.com/img/image-20210602170424355.png|thumb|none]]
+
+=== 升级G450板卡的固件 ===
+
+查看语音网关插槽信息：
+
+<syntaxhighlight lang="shell">SZ-G450-001(super)# show mg list_config
+SLOT   TYPE         CODE        SUFFIX  HW VINTAGE  FW VINTAGE
+----   --------     ----------  ------  ----------  -----------
+v1     S8300        ICC         D       5           1
+v2     E1T1         MM710       B       16          53
+v3     E1T1         MM710       B       16          53
+v4     E1T1         MM710       B       16          53
+v5     -- Not Installed --
+v6     Analog       MM716       A       13          98
+v7     Analog       MM716       A       13          98
+v8     -- Not Installed --
+v10    Mainboard    G450        B       2           36.8.0(A)</syntaxhighlight>
+
+
+查看语音网关上的板卡固件：
+
+<syntaxhighlight lang="shell">SZ-G450-001(super)# sh mm
+MEDIA MODULE DESCRIPTION: v1
+-------------------------------------------------
+Type           : ICC
+Description    : ICC Media Module
+Serial Number  : UNKNOWN
+HW Vintage     : 5
+HW Suffix      : D
+FW Version     : 1
+No. of ports   : 2
+Faults         : No Fault Messages
+
+
+This is an MGC controlled Media Module, check
+the MGC for additional status information.
+
+
+MEDIA MODULE DESCRIPTION: v2
+-------------------------------------------------
+Type           : MM710
+Description    : T1/E1 Media Module
+Serial Number  : 14TG19245582
+HW Vintage     : 16
+HW Suffix      : B
+FW Version     : 53
+No. of ports   : 1
+Faults         : No Fault Messages
+
+
+This is an MGC controlled Media Module, check
+the MGC for additional status information.
+
+
+MEDIA MODULE DESCRIPTION: v3
+-------------------------------------------------
+Type           : MM710
+Description    : T1/E1 Media Module
+Serial Number  : 14TG19245723
+HW Vintage     : 16
+HW Suffix      : B
+FW Version     : 53
+No. of ports   : 1
+Faults         : No Fault Messages
+
+
+This is an MGC controlled Media Module, check
+the MGC for additional status information.
+
+--type q to quit or space key to continue--
+
+
+MEDIA MODULE DESCRIPTION: v4
+-------------------------------------------------
+Type           : MM710
+Description    : T1/E1 Media Module
+Serial Number  : 14TG19245207
+HW Vintage     : 16
+HW Suffix      : B
+FW Version     : 53
+No. of ports   : 1
+Faults         : No Fault Messages
+
+
+This is an MGC controlled Media Module, check
+the MGC for additional status information.
+
+
+MEDIA MODULE DESCRIPTION: v5
+-------------------------------------------------
+Not Installed
+
+MEDIA MODULE DESCRIPTION: v6
+
+--type q to quit or space key to continue--
+-------------------------------------------------
+Type           : MM716
+Description    : Analog Media Module
+Serial Number  : 14TG49684434
+HW Vintage     : 13
+HW Suffix      : A
+FW Version     : 98
+No. of ports   : 24
+Faults         : No Fault Messages
+
+
+This is an MGC controlled Media Module, check
+the MGC for additional status information.
+
+
+MEDIA MODULE DESCRIPTION: v7
+-------------------------------------------------
+Type           : MM716
+Description    : Analog Media Module
+Serial Number  : 14TG51098022
+HW Vintage     : 13
+HW Suffix      : A
+FW Version     : 98
+
+--type q to quit or space key to continue--
+No. of ports   : 24
+Faults         : No Fault Messages
+
+
+This is an MGC controlled Media Module, check
+the MGC for additional status information.
+
+
+MEDIA MODULE DESCRIPTION: v8
+-------------------------------------------------
+Not Installed
+</syntaxhighlight>
